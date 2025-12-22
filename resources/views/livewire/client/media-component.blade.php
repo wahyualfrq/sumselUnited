@@ -183,36 +183,39 @@
 
                     <div class="grid sm:grid-cols-2 gap-8">
                         @foreach($news as $item)
-                            <article data-type="news"
-                                class="group flex flex-col bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-                                <div class="relative aspect-[16/10] overflow-hidden">
-                                    <img src="{{ asset('storage/' . $item->image_path) }}"
-                                        class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
-                                    <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors">
-                                    </div>
-                                </div>
-
-                                <div class="p-5 flex-1 flex flex-col">
-                                    <div class="text-xs text-gray-400 mb-2 font-medium">
-                                        {{ $item->published_at->format('d M Y') }}
+                            <a href="{{ route('media.news.detail', $item->slug) }}" class="block">
+                                <article data-type="news"
+                                    class="group flex flex-col bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                                    <div class="relative aspect-[16/10] overflow-hidden">
+                                        <img src="{{ asset('storage/' . $item->image_path) }}"
+                                            class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                                        <div
+                                            class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors">
+                                        </div>
                                     </div>
 
-                                    <h3
-                                        class="font-bold text-lg text-gray-900 leading-snug mb-3 line-clamp-2 group-hover:text-rose-600 transition-colors">
-                                        {{ $item->title }}
-                                    </h3>
+                                    <div class="p-5 flex-1 flex flex-col">
+                                        <div class="text-xs text-gray-400 mb-2 font-medium">
+                                            {{ $item->published_at->format('d M Y') }}
+                                        </div>
 
-                                    <p class="text-sm text-gray-500 line-clamp-2 mb-4 flex-1">
-                                        {{ Str::limit(strip_tags($item->content), 90) }}
-                                    </p>
+                                        <h3
+                                            class="font-bold text-lg text-gray-900 leading-snug mb-3 line-clamp-2 group-hover:text-rose-600 transition-colors">
+                                            {{ $item->title }}
+                                        </h3>
 
-                                    <div class="pt-4 border-t border-gray-50 flex items-center justify-between">
-                                        <span
-                                            class="text-xs font-semibold text-gray-400 group-hover:text-rose-600 transition-colors">Baca
-                                            Artikel</span>
+                                        <p class="text-sm text-gray-500 line-clamp-2 mb-4 flex-1">
+                                            {{ Str::limit(strip_tags($item->content), 90) }}
+                                        </p>
+
+                                        <div class="pt-4 border-t border-gray-50 flex items-center justify-between">
+                                            <span
+                                                class="text-xs font-semibold text-gray-400 group-hover:text-rose-600 transition-colors">Baca
+                                                Artikel</span>
+                                        </div>
                                     </div>
-                                </div>
-                            </article>
+                                </article>
+                            </a>
                         @endforeach
                     </div>
                 </div>
@@ -230,30 +233,38 @@
                     </div>
 
                     <div class="space-y-6">
-                        @foreach($popular as $index => $item)
-                            <div class="group flex gap-4 items-start">
-                                <span
-                                    class="text-2xl font-black text-gray-200 group-hover:text-rose-600 transition-colors -mt-2">
-                                    0{{ $loop->iteration }}
-                                </span>
-                                <div class="flex-1">
-                                    <a href="#"
-                                        class="font-semibold text-sm text-gray-800 leading-snug line-clamp-2 group-hover:text-rose-600 transition-colors mb-1">
-                                        {{ $item->title }}
-                                    </a>
-                                    <div class="flex items-center gap-2">
-                                        <span class="text-[10px] text-gray-400 font-medium uppercase tracking-wide">
-                                            {{ $item->published_at->format('d M') }}
-                                        </span>
+                        @foreach($popular as $item)
+                            <a href="{{ route('media.news.detail', $item->slug) }}" class="block group">
+
+                                <div class="flex gap-4 items-start">
+                                    <span
+                                        class="text-2xl font-black text-gray-200 group-hover:text-rose-600 transition-colors -mt-2">
+                                        0{{ $loop->iteration }}
+                                    </span>
+
+                                    <div class="flex-1">
+                                        <h4 class="font-semibold text-sm text-gray-800 leading-snug line-clamp-2
+                                   group-hover:text-rose-600 transition-colors mb-1">
+                                            {{ $item->title }}
+                                        </h4>
+
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-[10px] text-gray-400 font-medium uppercase tracking-wide">
+                                                {{ $item->published_at->format('d M') }}
+                                            </span>
+                                        </div>
                                     </div>
+
+                                    <img src="{{ asset('storage/' . $item->image_path) }}" class="w-16 h-16 rounded-lg object-cover shadow-sm
+                                group-hover:shadow-md transition-shadow">
                                 </div>
-                                <img src="{{ asset('storage/' . $item->image_path) }}"
-                                    class="w-16 h-16 rounded-lg object-cover shadow-sm group-hover:shadow-md transition-shadow">
-                            </div>
+
+                            </a>
                         @endforeach
                     </div>
 
-                    <a href="#"
+
+                    <a href="{{ route('media') }}?tab=news"
                         class="block w-full mt-6 py-2 text-center text-sm font-semibold text-rose-600 bg-rose-50 rounded-lg hover:bg-rose-100 transition-colors">
                         Lihat Indeks Berita
                     </a>
@@ -282,7 +293,7 @@
 
                             <a href="https://www.youtube.com/@sumselunited" target="_blank" rel="noopener noreferrer"
                                 class="group inline-flex items-center gap-2 text-sm font-semibold text-white
-                                                      bg-slate-800 px-4 py-2 rounded-full hover:bg-slate-700 transition-all">
+                                                                  bg-slate-800 px-4 py-2 rounded-full hover:bg-slate-700 transition-all">
                                 Kanal Youtube
                                 <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none"
                                     stroke="currentColor" viewBox="0 0 24 24">
