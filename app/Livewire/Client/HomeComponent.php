@@ -9,6 +9,7 @@ use Carbon\Carbon;
 class HomeComponent extends Component
 {
     public $nextMatch;
+    public $upcomingMatches;
     public $countdown = [
         'days' => 0,
         'hours' => 0,
@@ -36,6 +37,16 @@ class HomeComponent extends Component
                 'minutes' => $diff->i,
             ];
         }
+
+        // 🔥 JADWAL PERTANDINGAN (KANAN)
+        $this->upcomingMatches = Ticket::where('is_active', true)
+            ->where('match_date', '>=', $now)
+            ->orderByRaw("CASE sales_status WHEN 'available' THEN 0 ELSE 1 END")
+            ->orderBy('match_date')
+            ->limit(2)
+            ->get();
+
+
 
         return view('livewire.client.home-component')
             ->layout('client.layouts.app');

@@ -26,6 +26,15 @@
             @error('match_date') <div class="text-xs text-red-600 mt-1">{{ $message }}</div> @enderror
         </div>
 
+        <div>
+            <label class="block text-sm font-semibold mb-1">Status Penjualan</label>
+            <select wire:model="sales_status" class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                <option value="upcoming">Segera Tersedia</option>
+                <option value="available">Tiket Tersedia</option>
+            </select>
+        </div>
+
+
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
                 <label class="text-sm font-semibold">Harga</label>

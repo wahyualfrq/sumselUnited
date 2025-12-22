@@ -12,6 +12,9 @@ class TicketCreateComponent extends Component
     public string $match_date = ''; // format: Y-m-d\TH:i (input datetime-local)
     public int $price = 0;
     public int $stock = 0;
+
+    public string $sales_status = 'upcoming';
+
     public bool $is_active = true;
 
     protected function rules(): array
@@ -20,6 +23,7 @@ class TicketCreateComponent extends Component
             'match_name' => ['required', 'string', 'max:255'],
             'stadium' => ['required', 'string', 'max:255'],
             'match_date' => ['required', 'date'],
+            'sales_status' => ['required', 'in:upcoming,available'],
             'price' => ['required', 'integer', 'min:0'],
             'stock' => ['required', 'integer', 'min:0'],
             'is_active' => ['boolean'],

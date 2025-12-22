@@ -14,6 +14,9 @@ class TicketEditComponent extends Component
     public string $match_date = '';
     public int $price = 0;
     public int $stock = 0;
+
+    public string $sales_status = 'upcoming';
+
     public bool $is_active = true;
 
     public function mount(Ticket $ticket)
@@ -23,6 +26,7 @@ class TicketEditComponent extends Component
         $this->match_name = $ticket->match_name;
         $this->stadium = $ticket->stadium;
         $this->match_date = optional($ticket->match_date)->format('Y-m-d\TH:i') ?? '';
+        $this->sales_status = $ticket->sales_status ?? 'upcoming';
         $this->price = (int) $ticket->price;
         $this->stock = (int) $ticket->stock;
         $this->is_active = (bool) $ticket->is_active;
@@ -34,6 +38,7 @@ class TicketEditComponent extends Component
             'match_name' => ['required', 'string', 'max:255'],
             'stadium' => ['required', 'string', 'max:255'],
             'match_date' => ['required', 'date'],
+            'sales_status' => ['required', 'in:upcoming,available'],
             'price' => ['required', 'integer', 'min:0'],
             'stock' => ['required', 'integer', 'min:0'],
             'is_active' => ['boolean'],

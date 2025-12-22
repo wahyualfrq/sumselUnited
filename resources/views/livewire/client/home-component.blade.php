@@ -249,75 +249,75 @@
                     class="bg-white rounded-2xl border border-gray-200 shadow-md p-6 hover:shadow-rose-600/20 transition-all duration-500">
                     <div class="flex items-center justify-between mb-6">
                         <h2 class="text-xl font-bold text-neutral-900">Jadwal Pertandingan</h2>
-                        <a href="matches.html"
-                            class="text-rose-600 hover:text-rose-700 font-semibold text-sm transition-colors">Lihat
-                            Semua</a>
-                    </div>
+                        <a href="{{ route('tickets') }}"
+                        class="text-rose-600 hover:text-rose-700 font-semibold text-sm">
+                        Lihat Semua
+                        </a>
 
-                    <div class="space-y-5">
-                        <!-- Fixture 1 -->
-                        <div
-                            class="border border-gray-200 rounded-xl p-4 hover:border-rose-500/50 hover:shadow-md hover:shadow-rose-600/10 transition-all duration-300">
+                    </div>
+                <div class="space-y-5">
+                    @forelse ($upcomingMatches as $match)
+                        <div class="border border-gray-200 rounded-xl p-4 hover:border-rose-500/50 transition">
+
+                            {{-- Header --}}
                             <div class="flex items-center justify-between mb-3">
                                 <span class="text-sm text-gray-500">Liga 1 Indonesia</span>
-                                <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-semibold">TIKET
-                                    TERSEDIA</span>
-                            </div>
-                            <div class="text-center mb-3">
-                                <div class="text-sm text-gray-500 mb-1">Sabtu, 7 September 2025</div>
-                                <div class="text-lg font-bold text-rose-600">19:30 WIB</div>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <div class="text-center">
-                                    <img src="https://images.unsplash.com/photo-1614632537190-23e4b2e69c88?q=80"
-                                        alt="Club logo"
-                                        class="w-12 h-12 rounded-full object-cover mx-auto mb-2 border border-gray-200">
-                                    <div class="text-sm font-semibold text-gray-800">Football Club Pro</div>
-                                </div>
-                                <div class="text-lg font-bold text-gray-600">VS</div>
-                                <div class="text-center">
-                                    <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?q=80"
-                                        alt="Opponent logo"
-                                        class="w-12 h-12 rounded-full object-cover mx-auto mb-2 border border-gray-200">
-                                    <div class="text-sm font-semibold text-gray-800">Persija Jakarta</div>
-                                </div>
-                            </div>
-                            <a href="matches.html"
-                                class="mt-5 block bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-700 hover:to-red-700 text-white py-2 px-4 rounded-lg font-semibold text-sm transition-all duration-300 shadow-md shadow-rose-600/40 hover:shadow-rose-600/60 text-center">
-                                Beli Tiket
-                            </a>
-                        </div>
 
-                        <!-- Fixture 2 -->
-                        <div
-                            class="border border-gray-200 rounded-xl p-4 hover:border-rose-500/50 hover:shadow-md hover:shadow-rose-600/10 transition-all duration-300">
-                            <div class="flex items-center justify-between mb-3">
-                                <span class="text-sm text-gray-500">Liga 1 Indonesia</span>
-                                <span
-                                    class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs font-semibold">SEGERA
-                                    TERSEDIA</span>
+                                @if ($match->status === 'available')
+                                    <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-semibold">
+                                        TIKET TERSEDIA
+                                    </span>
+                                @elseif ($match->status === 'upcoming')
+                                    <span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs font-semibold">
+                                        SEGERA TERSEDIA
+                                    </span>
+                                @else
+                                    <span class="bg-gray-200 text-gray-600 px-2 py-1 rounded text-xs font-semibold">
+                                        HABIS
+                                    </span>
+                                @endif
+
                             </div>
+
+                            {{-- Tanggal --}}
                             <div class="text-center mb-3">
-                                <div class="text-sm text-gray-500 mb-1">Minggu, 15 September 2025</div>
-                                <div class="text-lg font-bold text-rose-600">15:30 WIB</div>
+                                <div class="text-sm text-gray-500">
+                                    {{ \Carbon\Carbon::parse($match->match_date)->translatedFormat('l, d F Y') }}
+                                </div>
+                                <div class="text-lg font-bold text-rose-600">
+                                    {{ \Carbon\Carbon::parse($match->match_date)->format('H:i') }} WIB
+                                </div>
                             </div>
+
+                            {{-- Tim --}}
                             <div class="flex items-center justify-between">
                                 <div class="text-center">
-                                    <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?q=80"
-                                        alt="Opponent logo"
-                                        class="w-12 h-12 rounded-full object-cover mx-auto mb-2 border border-gray-200">
-                                    <div class="text-sm font-semibold text-gray-800">PSM Makassar</div>
+                                    <div class="text-sm font-semibold">{{ $match->home_team }}</div>
                                 </div>
-                                <div class="text-lg font-bold text-gray-600">VS</div>
+                                <div class="font-bold text-gray-500">VS</div>
                                 <div class="text-center">
-                                    <img src="https://images.unsplash.com/photo-1614632537190-23e4b2e69c88?q=80"
-                                        alt="Club logo"
-                                        class="w-12 h-12 rounded-full object-cover mx-auto mb-2 border border-gray-200">
-                                    <div class="text-sm font-semibold text-gray-800">Football Club Pro</div>
+                                    <div class="text-sm font-semibold">{{ $match->away_team }}</div>
                                 </div>
                             </div>
+
+                            {{-- CTA --}}
+                            @if ($match->status === 'available')
+                                <a href="{{ route('tickets.purchase', $match->id) }}"
+                                class="mt-5 block bg-gradient-to-r from-rose-600 to-red-600 text-white py-2 rounded-lg text-center font-semibold">
+                                    Beli Tiket
+                                </a>
+                            @else
+                                <button disabled
+                                    class="mt-5 w-full bg-gray-300 text-gray-600 py-2 rounded-lg font-semibold cursor-not-allowed">
+                                    Tiket Belum Tersedia
+                                </button>
+                            @endif
                         </div>
-                    </div>
+                    @empty
+                        <p class="text-center text-gray-500">Belum ada jadwal pertandingan.</p>
+                    @endforelse
+                </div>
+
                 </div>
 
             </div>

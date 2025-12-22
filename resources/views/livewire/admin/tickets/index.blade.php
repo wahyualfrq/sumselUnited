@@ -41,7 +41,7 @@
                     <th class="text-left p-3">Stadion</th>
                     <th class="text-right p-3 cursor-pointer" wire:click="sortBy('price')">Harga</th>
                     <th class="text-right p-3 cursor-pointer" wire:click="sortBy('stock')">Stok</th>
-                    <th class="text-center p-3">Status</th>
+                    <th class="text-center p-3">Status Tiket</th>
                     <th class="text-right p-3">Aksi</th>
                 </tr>
             </thead>
@@ -64,12 +64,27 @@
                             {{ $t->stock }}
                         </td>
                         <td class="p-3 text-center">
-                            <button wire:click="toggleActive({{ $t->id }})" class="px-3 py-1 rounded-full text-xs font-bold
-                                    {{ $t->is_active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600' }}">
-                                {{ $t->is_active ? 'Aktif' : 'Nonaktif' }}
-                            </button>
+                            @if ($t->status === 'available')
+                                <span class="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700">
+                                    TERSEDIA
+                                </span>
+                            @elseif ($t->status === 'upcoming')
+                                <span class="px-3 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-700">
+                                    SEGERA TERSEDIA
+                                </span>
+                            @else
+                                <span class="px-3 py-1 rounded-full text-xs font-bold bg-gray-200 text-gray-600">
+                                    HABIS
+                                </span>
+                            @endif
                         </td>
+
                         <td class="p-3 text-right space-x-2">
+                            <button wire:click="toggleActive({{ $t->id }})" class="px-3 py-1 rounded-lg text-xs font-semibold
+                        {{ $t->is_active ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-600' }}">
+                                {{ $t->is_active ? 'Nonaktifkan' : 'Aktifkan' }}
+                            </button>
+
                             <a href="{{ route('admin.tickets.edit', $t->id) }}"
                                 class="px-3 py-1 rounded-lg bg-indigo-50 text-indigo-700 font-semibold hover:bg-indigo-100">
                                 Edit
