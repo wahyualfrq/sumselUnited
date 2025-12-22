@@ -59,11 +59,11 @@ Route::middleware(['auth', RoleMiddleware::class . ':user'])
 
         // List / landing tiket (opsional kalau ada)
         Route::get('/tickets', TicketPurchaseComponent::class)
-            ->name('tickets');
+            ->name('tickets.purchase');
 
         // Detail & beli tiket (INI YANG DIPAKAI HERO)
         Route::get('/tickets/{ticket}', TicketPurchaseComponent::class)
-            ->name('tickets.purchase');
+            ->name('tickets.detail');
     });
 
 

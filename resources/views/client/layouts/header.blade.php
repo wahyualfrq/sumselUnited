@@ -83,7 +83,7 @@
                         <div id="profile-menu"
                             class="absolute right-0 mt-2 w-44 bg-white rounded-xl shadow-lg border hidden animate-slideDown">
                             @if(auth()->user()->role === 'user')
-                                <a href="{{ route('tickets') }}" class="block px-4 py-2 text-sm hover:bg-gray-100">
+                                <a href="{{ route('tickets.purchase') }}" class="block px-4 py-2 text-sm hover:bg-gray-100">
                                     🎟️ Tiket Saya
                                 </a>
                             @endif
@@ -127,7 +127,7 @@
             <hr>
 
             @auth
-                <a href="{{ auth()->user()->role === 'admin' ? route('admin.dashboard') : route('tickets') }}"
+                <a href="{{ auth()->user()->role === 'admin' ? route('admin.dashboard') : route('tickets.purchase') }}"
                     class="block px-3 py-2 font-semibold">
                     Dashboard
                 </a>

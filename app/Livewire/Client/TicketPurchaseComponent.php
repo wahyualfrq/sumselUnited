@@ -10,12 +10,21 @@ class TicketPurchaseComponent extends Component
 {
     public $confirmingTicketId = null;
     public $search = '';
+
+    public $ticket;
     public $match = null;
 
     protected $queryString = [
         'search' => ['except' => ''],
         'match' => ['except' => null],
     ];
+
+    public function mount($ticket = null)
+    {
+        if ($ticket) {
+            $this->ticket = Ticket::findOrFail($ticket);
+        }
+    }
 
     public function confirmBuy(int $ticketId)
     {
@@ -50,6 +59,12 @@ class TicketPurchaseComponent extends Component
 
     public function render()
     {
+        // DETAIL TIKET
+        if ($this->ticket) {
+            return view('livewire.client.tickets.detail')
+                ->layout('client.layouts.app')
+                ->title('Detail Tiket');
+        }
         $search = trim($this->search);
 
         $tickets = Ticket::where('is_active', true)
@@ -62,11 +77,13 @@ class TicketPurchaseComponent extends Component
             ->orderBy('match_date')
             ->get();
 
+        // LIST TIKET
         return view('livewire.client.tickets.purchase', [
-            'tickets' => $tickets,
-        ])
-            ->layout('client.layouts.ticket')
-            ->title('Pembelian Tiket');
+            'tickets' => Ticket::where('is_active', true)
+                ->orderBy('match_date')
+                ->get()
+        ])->layout('client.layouts.app')
+            ->title('Beli Tiket');
     }
 
 

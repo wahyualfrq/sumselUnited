@@ -57,150 +57,112 @@
             @else
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     @foreach($tickets as $ticket)
-                            {{-- Logic Stock Warning --}}
-                            @php
-                                $isLowStock = $ticket->stock < 20;
-                                $isSoldOut = $ticket->stock == 0;
-                            @endphp
+                                {{-- Logic Stock Warning --}}
+                                @php
+                                    $isLowStock = $ticket->stock < 20;
+                                    $isSoldOut = $ticket->stock == 0;
+                                @endphp
 
-                            {{-- PENTING: Tambahkan wire:key agar Livewire bisa melacak elemen --}}
-                            <div wire:key="ticket-{{ $ticket->id }}"
-                                class="group bg-white rounded-2xl shadow-sm hover:shadow-xl border border-gray-100 transition-all duration-300 flex flex-col overflow-hidden relative">
+                                {{-- PENTING: Tambahkan wire:key agar Livewire bisa melacak elemen --}}
+                                <div wire:key="ticket-{{ $ticket->id }}"
+                                    class="group bg-white rounded-2xl shadow-sm hover:shadow-xl border border-gray-100 transition-all duration-300 flex flex-col overflow-hidden relative">
 
-                                {{-- Badge Status --}}
-                                @if($isSoldOut)
-                                    <div
-                                        class="absolute top-4 right-4 bg-gray-800 text-white text-xs font-bold px-3 py-1 rounded-full z-10">
-                                        SOLD OUT
+                                    {{-- Badge Status --}}
+                                    @if($isSoldOut)
+                                        <div
+                                            class="absolute top-4 right-4 bg-gray-800 text-white text-xs font-bold px-3 py-1 rounded-full z-10">
+                                            SOLD OUT
+                                        </div>
+                                    @elseif($isLowStock)
+                                        <div
+                                            class="absolute top-4 right-4 bg-red-100 text-red-600 text-xs font-bold px-3 py-1 rounded-full z-10 animate-pulse">
+                                            🔥 Segera Habis
+                                        </div>
+                                    @endif
+
+                                    {{-- Card Header --}}
+                                    {{-- Card Header: Date & Venue --}}
+                                    <div class="p-5 border-b border-gray-50 bg-gray-50/50">
+                                        {{-- PERBAIKAN: Ganti 'justify-between' menjadi 'justify-start gap-4'
+                                        agar Jam pindah ke kiri dan tidak tertumpuk Badge --}}
+                                        <div
+                                            class="flex items-center justify-start gap-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
+
+                                            {{-- Tanggal --}}
+                                            <div class="flex items-center gap-1">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                                    </path>
+                                                </svg>
+                                                {{ \Carbon\Carbon::parse($ticket->match_date)->translatedFormat('d M Y') }}
+                                            </div>
+
+                                            {{-- Separator (Opsional, pemanis visual) --}}
+                                            <div class="h-1 w-1 rounded-full bg-gray-300"></div>
+
+                                            {{-- Jam (Sekarang di sebelah kiri) --}}
+                                            <div class="flex items-center gap-1">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                </svg>
+                                                {{ \Carbon\Carbon::parse($ticket->match_date)->format('H:i') }} WIB
+                                            </div>
+                                        </div>
                                     </div>
-                                @elseif($isLowStock)
-                                    <div
-                                        class="absolute top-4 right-4 bg-red-100 text-red-600 text-xs font-bold px-3 py-1 rounded-full z-10 animate-pulse">
-                                        🔥 Segera Habis
-                                    </div>
-                                @endif
 
-                                {{-- Card Header --}}
-                                {{-- Card Header: Date & Venue --}}
-                                <div class="p-5 border-b border-gray-50 bg-gray-50/50">
-                                    {{-- PERBAIKAN: Ganti 'justify-between' menjadi 'justify-start gap-4'
-                                    agar Jam pindah ke kiri dan tidak tertumpuk Badge --}}
-                                    <div
-                                        class="flex items-center justify-start gap-4 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    {{-- Card Body --}}
+                                    {{-- FIX: Sebelumnya ada typo di penutup komentar --}}
+                                    <div class="p-6 flex-grow flex flex-col justify-center text-center">
+                                        <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-indigo-600 transition-colors">
+                                            {{ $ticket->match_name }}
+                                        </h3>
 
-                                        {{-- Tanggal --}}
-                                        <div class="flex items-center gap-1">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <div class="flex items-center justify-center gap-2 text-sm text-gray-500 mt-2">
+                                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
                                                 </path>
-                                            </svg>
-                                            {{ \Carbon\Carbon::parse($ticket->match_date)->translatedFormat('d M Y') }}
-                                        </div>
-
-                                        {{-- Separator (Opsional, pemanis visual) --}}
-                                        <div class="h-1 w-1 rounded-full bg-gray-300"></div>
-
-                                        {{-- Jam (Sekarang di sebelah kiri) --}}
-                                        <div class="flex items-center gap-1">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                             </svg>
-                                            {{ \Carbon\Carbon::parse($ticket->match_date)->format('H:i') }} WIB
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {{-- Card Body --}}
-                                {{-- FIX: Sebelumnya ada typo di penutup komentar --}}
-                                <div class="p-6 flex-grow flex flex-col justify-center text-center">
-                                    <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-indigo-600 transition-colors">
-                                        {{ $ticket->match_name }}
-                                    </h3>
-
-                                    <div class="flex items-center justify-center gap-2 text-sm text-gray-500 mt-2">
-                                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
-                                            </path>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                        </svg>
-                                        {{ $ticket->stadium }}
-                                    </div>
-                                </div>
-
-                                {{-- Card Footer --}}
-                                <div class="p-5 border-t border-gray-100 bg-white mt-auto relative z-20">
-                                    <div class="flex justify-between items-end mb-4">
-                                        <div>
-                                            <p class="text-xs text-gray-400 mb-1">Harga Tiket</p>
-                                            <span class="text-lg font-bold text-indigo-600">
-                                                Rp {{ number_format($ticket->price, 0, ',', '.') }}
-                                            </span>
-                                        </div>
-                                        <div class="text-right">
-                                            <p class="text-xs text-gray-400 mb-1">Sisa Stok</p>
-                                            <span
-                                                class="text-sm font-semibold {{ $isLowStock ? 'text-red-500' : 'text-gray-700' }}">
-                                                {{ $ticket->stock }} Tiket
-                                            </span>
+                                            {{ $ticket->stadium }}
                                         </div>
                                     </div>
 
-                                    {{-- Tambahkan wire:loading.attr untuk mencegah double click --}}
-                                    <button type="button" id="btn-buy-{{ $ticket->id }}" name="action_buy_{{ $ticket->id }}"
-                                        wire:click="confirmBuy({{ $ticket->id }})" wire:loading.attr="disabled" {{ $isSoldOut ? 'disabled' : '' }} class="w-full py-3 px-4 rounded-xl font-semibold text-sm transition-all duration-200 transform hover:-translate-y-0.5 relative z-30
-                                                                    {{ $isSoldOut
-                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                        : 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg hover:shadow-indigo-500/30' 
-                                                                    }}">
-                                        {{ $isSoldOut ? 'Tiket Habis' : 'Beli Tiket Sekarang' }}
-                                    </button>
+                                    {{-- Card Footer --}}
+                                    <div class="p-5 border-t border-gray-100 bg-white mt-auto relative z-20">
+                                        <div class="flex justify-between items-end mb-4">
+                                            <div>
+                                                <p class="text-xs text-gray-400 mb-1">Harga Tiket</p>
+                                                <span class="text-lg font-bold text-indigo-600">
+                                                    Rp {{ number_format($ticket->price, 0, ',', '.') }}
+                                                </span>
+                                            </div>
+                                            <div class="text-right">
+                                                <p class="text-xs text-gray-400 mb-1">Sisa Stok</p>
+                                                <span
+                                                    class="text-sm font-semibold {{ $isLowStock ? 'text-red-500' : 'text-gray-700' }}">
+                                                    {{ $ticket->stock }} Tiket
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        {{-- Tambahkan wire:loading.attr untuk mencegah double click --}}
+                                        <a href="{{ route('tickets.detail', $ticket->id) }}" class="block w-full py-3 px-4 rounded-xl font-semibold text-sm text-center transition-all duration-200 transform hover:-translate-y-0.5
+                        {{ $isSoldOut
+                            ? 'bg-gray-100 text-gray-400 pointer-events-none cursor-not-allowed'
+                            : 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg hover:shadow-indigo-500/30'
+                        }}">
+                                            {{ $isSoldOut ? 'Tiket Habis' : 'Beli Tiket Sekarang' }}
+                                        </a>
+
+                                    </div>
                                 </div>
-                            </div>
                     @endforeach
                 </div>
             @endif
         </div>
     </div>
-
-    {{-- MODAL KONFIRMASI PEMBELIAN --}}
-    @if($confirmingTicketId)
-        <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 animate-slideDown">
-                <h3 class="text-lg font-bold text-gray-800 mb-2">
-                    Konfirmasi Pembelian
-                </h3>
-
-                <p class="text-sm text-gray-600 mb-6">
-                    Apakah kamu yakin ingin membeli tiket pertandingan ini?
-                </p>
-
-                <div class="flex justify-end gap-3">
-                    {{-- ✅ BATAL → TANPA LOADING --}}
-                    <button type="button" wire:click="$set('confirmingTicketId', null)"
-                        class="px-4 py-2 rounded-lg text-sm bg-gray-100 hover:bg-gray-200">
-                        Batal
-                    </button>
-
-                    {{-- ✅ KONFIRMASI → ADA LOADING --}}
-                    <button type="button" wire:click="buyConfirmed" wire:loading.attr="disabled" wire:target="buyConfirmed"
-                        class="px-5 py-2 rounded-lg text-sm font-semibold
-                                       bg-indigo-600 hover:bg-indigo-700 text-white">
-
-                        <span wire:loading.remove wire:target="buyConfirmed">
-                            Konfirmasi Beli
-                        </span>
-
-                        <span wire:loading wire:target="buyConfirmed">
-                            Memproses...
-                        </span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    @endif
-
 </div>

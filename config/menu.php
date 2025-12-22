@@ -16,7 +16,7 @@ return [
         ],
         [
             'label' => 'Pertandingan',
-            'url' => 'tickets',
+            'url' => 'tickets.purchase',
         ],
         [
             'label' => 'Media',

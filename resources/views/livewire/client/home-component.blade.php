@@ -51,7 +51,7 @@
             </div>
 
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="{{ route('tickets') }}"
+                <a href="{{ route('tickets.purchase') }}"
                    class="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg font-semibold text-lg shadow-lg">
                     Beli Tiket Sekarang
                 </a>
@@ -249,9 +249,9 @@
                     class="bg-white rounded-2xl border border-gray-200 shadow-md p-6 hover:shadow-rose-600/20 transition-all duration-500">
                     <div class="flex items-center justify-between mb-6">
                         <h2 class="text-xl font-bold text-neutral-900">Jadwal Pertandingan</h2>
-                        <a href="{{ route('tickets') }}"
+                       <a href="{{ route('tickets.purchase') }}"
                         class="text-rose-600 hover:text-rose-700 font-semibold text-sm">
-                        Lihat Semua
+                            Lihat Semua
                         </a>
 
                     </div>
@@ -302,7 +302,7 @@
 
                             {{-- CTA --}}
                             @if ($match->status === 'available')
-                                <a href="{{ route('tickets.purchase', $match->id) }}"
+                                <a href="{{ route('tickets.detail', $match->id) }}"
                                 class="mt-5 block bg-gradient-to-r from-rose-600 to-red-600 text-white py-2 rounded-lg text-center font-semibold">
                                     Beli Tiket
                                 </a>
