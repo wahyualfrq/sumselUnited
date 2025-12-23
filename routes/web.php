@@ -35,9 +35,14 @@ use App\Livewire\Admin\News\Index as AdminNewsIndex;
 use App\Livewire\Admin\News\Create as AdminNewsCreate;
 use App\Livewire\Admin\News\Edit as AdminNewsEdit;
 
+use App\Livewire\Client\Gallery\Index as ClientGalleryIndex;
+use App\Livewire\Client\Gallery\Show as ClientGalleryShow;
+
+use App\Livewire\Admin\Galleries\GalleryIndex as AdminGalleryIndex;
+use App\Livewire\Admin\Galleries\GalleryCreate;
+use App\Livewire\Admin\Galleries\GalleryEdit;
+
 use App\Livewire\Admin\Videos\VideoSyncComponent;
-
-
 // =======================
 // AUTH
 // =======================
@@ -56,6 +61,15 @@ Route::get('/team', TeamComponent::class)->name('team');
 Route::get('/media', MediaComponent::class)->name('media');
 Route::get('/contact', ContactComponent::class)->name('contact');
 Route::get('/media/news/{news:slug}', NewsDetailComponent::class)->name('media.news.detail');
+Route::get('/media/news/{news:slug}', NewsDetailComponent::class)
+    ->name('media.news.detail');
+
+/* ✅ CLIENT GALLERY */
+Route::get('/gallery', ClientGalleryIndex::class)
+    ->name('galleries.index');
+
+Route::get('/gallery/{gallery:slug}', ClientGalleryShow::class)
+    ->name('galleries.show');
 
 
 /*
@@ -65,7 +79,6 @@ Route::get('/media/news/{news:slug}', NewsDetailComponent::class)->name('media.n
 */
 Route::middleware(['auth', RoleMiddleware::class . ':user'])
     ->group(function () {
-
         // List / landing tiket (opsional kalau ada)
         Route::get('/tickets', TicketPurchaseComponent::class)
             ->name('tickets.purchase');
@@ -105,6 +118,10 @@ Route::prefix('admin')
 
         Route::get('/videos/sync', VideoSyncComponent::class)
             ->name('videos.sync');
+
+        Route::get('/galleries', AdminGalleryIndex::class)->name('gallery.index');
+        Route::get('/galleries/create', GalleryCreate::class)->name('gallery.create');
+        Route::get('/galleries/{id}/edit', GalleryEdit::class)->name('gallery.edit');
 
     });
 

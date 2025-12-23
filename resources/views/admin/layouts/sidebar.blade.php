@@ -24,6 +24,12 @@
             Manajemen Tim
         </a>
 
+        {{-- Galeri --}}
+        <a href="{{ route('admin.gallery.index') }}" class="block px-4 py-2 rounded-lg transition-all
+   {{ request()->routeIs('admin.gallery.*') ? 'bg-white/20 font-semibold' : 'hover:bg-white/10' }}">
+            Manajemen Galeri
+        </a>
+
         {{-- Berita --}}
         <a href="{{ route('admin.news.index') }}" class="block px-4 py-2 rounded-lg transition-all
                 {{ request()->routeIs('admin.news.index') ? 'bg-white/20 font-semibold' : 'hover:bg-white/10' }}">

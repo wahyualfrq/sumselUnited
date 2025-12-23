@@ -6,12 +6,18 @@ use Livewire\Component;
 use App\Models\Ticket;
 use App\Models\News;
 use Carbon\Carbon;
+use App\Models\Gallery;
+use App\Models\Video;
+
 
 class HomeComponent extends Component
 {
     public $nextMatch;
     public $upcomingMatches;
     public $latestNews;
+    public $galleries;
+    public $videos;
+
 
     public $countdown = [
         'days' => 0,
@@ -22,6 +28,18 @@ class HomeComponent extends Component
     public function render()
     {
         $now = now('Asia/Jakarta');
+
+        $this->galleries = Gallery::where('is_visible', true)
+            ->latest()
+            ->limit(3)
+            ->get();
+
+        // 🔥 GALERI VIDEO (YT API RESULT)
+        $this->videos = Video::where('is_visible', true)
+            ->latest('published_at')
+            ->limit(3)
+            ->get();
+
 
         /**
          * ===========================

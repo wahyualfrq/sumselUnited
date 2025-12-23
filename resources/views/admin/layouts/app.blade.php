@@ -21,7 +21,12 @@
         {{ $slot }}
     </main>
 
-    @include('admin.layouts.footer')
+    @if(auth()->user()->isAdmin())
+        @include('admin.layouts.sidebar')
+    @else
+        @include('client.layouts.navbar')
+    @endif
+
 
     @livewireScripts
 </body>

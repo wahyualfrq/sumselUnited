@@ -195,40 +195,49 @@
 
                 <div class="space-y-6">
                     @forelse ($latestNews as $news)
-                        <article
-                            class="flex space-x-4 hover:-translate-y-1 hover:shadow-lg hover:shadow-rose-600/10
-                                border border-transparent hover:border-rose-500/30 rounded-xl p-2 transition-all duration-300">
+                        <a href="{{ route('media.news.detail', $news->slug) }}"
+                        class="block group">
 
-                            {{-- Thumbnail --}}
-                            <img
-                                src="{{ asset('storage/' . $news->image_path) }}"
-                                alt="{{ $news->title }}"
-                                class="w-24 h-20 rounded-lg object-cover border border-gray-200"
-                                onerror="this.src='https://images.pexels.com/photos/274506/pexels-photo-274506.jpeg';">
+                            <article
+                                class="flex space-x-4
+                                    hover:-translate-y-1 hover:shadow-lg hover:shadow-rose-600/10
+                                    border border-transparent hover:border-rose-500/30
+                                    rounded-xl p-2 transition-all duration-300">
 
-                            {{-- Content --}}
-                            <div class="flex-1 min-w-0">
-                                <h3
-                                    class="text-sm font-semibold text-neutral-800 hover:text-rose-600 transition-colors mb-1 line-clamp-2">
-                                    {{ $news->title }}
-                                </h3>
+                                {{-- Thumbnail --}}
+                                <img
+                                    src="{{ asset('storage/' . $news->image_path) }}"
+                                    alt="{{ $news->title }}"
+                                    class="w-24 h-20 rounded-lg object-cover border border-gray-200"
+                                    onerror="this.src='https://images.pexels.com/photos/274506/pexels-photo-274506.jpeg';">
 
-                                <p class="text-xs text-gray-500 mb-1">
-                                    {{ $news->published_at->translatedFormat('d F Y') }}
-                                    • {{ $news->published_at->format('H:i') }} WIB
-                                </p>
+                                {{-- Content --}}
+                                <div class="flex-1 min-w-0">
+                                    <h3
+                                        class="text-sm font-semibold text-neutral-800
+                                            group-hover:text-rose-600 transition-colors mb-1 line-clamp-2">
+                                        {{ $news->title }}
+                                    </h3>
 
-                                <p class="text-sm text-gray-600 line-clamp-2">
-                                    {{ Str::limit(strip_tags($news->content), 80) }}
-                                </p>
-                            </div>
-                        </article>
+                                    <p class="text-xs text-gray-500 mb-1">
+                                        {{ $news->published_at->translatedFormat('d F Y') }}
+                                        • {{ $news->published_at->format('H:i') }} WIB
+                                    </p>
+
+                                    <p class="text-sm text-gray-600 line-clamp-2">
+                                        {{ Str::limit(strip_tags($news->content), 80) }}
+                                    </p>
+                                </div>
+                            </article>
+
+                        </a>
                     @empty
                         <p class="text-sm text-gray-500 text-center">
                             Belum ada berita terbaru.
                         </p>
                     @endforelse
                 </div>
+
             </div>
 
 
@@ -309,74 +318,89 @@
         </div>
     </section>
 
-    @php
-        $galleries = [
-            [
-                'title' => 'Latihan Pra-Musim',
-                'images' => [
-                    'https://images.unsplash.com/photo-1607746882042-944635dfe10e',
-                    'https://images.unsplash.com/photo-1518972559570-7cc1309f3229',
-                    'https://images.unsplash.com/photo-1521412644187-c49fa3b3c1b7',
-                ],
-            ],
-            [
-                'title' => 'Turnamen Lokal',
-                'images' => [
-                    'https://images.unsplash.com/photo-1599058917212-d750089bc07d',
-                    'https://images.unsplash.com/photo-1584467735871-1f7f7f4f6b6f',
-                    'https://images.unsplash.com/photo-1607746882042-944635dfe10e',
-                ],
-            ],
-            // Tambah galeri lain di sini...
-        ];
-    @endphp
+           <!-- Gallery Section -->
+<section class="relative bg-gradient-to-b from-gray-50 via-white to-gray-50 py-24 overflow-hidden">
 
-    <!-- Gallery Section -->
-    <section class="relative bg-gradient-to-b from-gray-50 via-white to-gray-50 py-24 overflow-hidden">
-        <!-- Decorative Glow Background -->
-        <div
-            class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-rose-100/40 rounded-full blur-3xl opacity-30 pointer-events-none">
+    <!-- Decorative Glow -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px]
+                bg-rose-100/40 rounded-full blur-3xl opacity-30 pointer-events-none">
+    </div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Title -->
+        <div class="text-center mb-16">
+            <h2 class="text-5xl font-extrabold bg-gradient-to-r
+                    from-neutral-900 via-neutral-700 to-neutral-500
+                    bg-clip-text text-transparent mb-4">
+                Galeri Foto
+            </h2>
+            <div class="w-24 h-1 mx-auto bg-gradient-to-r from-rose-600 to-red-600 rounded-full mb-4"></div>
+            <p class="text-gray-600 text-lg">
+                Momen terbaik <span class="font-semibold text-rose-600">Sumsel United</span>
+            </p>
         </div>
 
-        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Title -->
-            <div class="text-center mb-16">
-                <h2
-                    class="text-5xl font-extrabold bg-gradient-to-r from-neutral-900 via-neutral-700 to-neutral-500 bg-clip-text text-transparent mb-4 drop-shadow-sm">
-                    Galeri Foto
-                </h2>
-                <div class="w-24 h-1 mx-auto bg-gradient-to-r from-rose-600 to-red-600 rounded-full mb-4"></div>
-                <p class="text-gray-600 text-lg">Momen-momen terbaik <span class="font-semibold text-rose-600">Sumsel
-                        United</span></p>
-            </div>
+        <!-- Gallery Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 
-            <!-- Image Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                @foreach ($galleries as $gallery)
-                    <a href="#"
-                        class="group relative block rounded-2xl border border-gray-200 shadow-md overflow-hidden 
-                           hover:shadow-rose-600/30 hover:border-rose-500 transition-all duration-500 transform hover:-translate-y-2">
-                        <div class="relative h-64">
-                            <img src="{{ $gallery['images'][0] }}" alt="Cover Galeri"
-                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                                onerror="this.src='https://images.pexels.com/photos/274506/pexels-photo-274506.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'; this.onerror=null;">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
-                            <div class="absolute bottom-0 left-0 right-0 p-6">
-                                <h3 class="text-white text-xl font-bold mb-1">{{ $gallery['title'] }}</h3>
-                                <p class="text-gray-200 text-sm font-medium group-hover:text-rose-400 transition-colors">
-                                    Lihat koleksi foto →
-                                </p>
-                            </div>
+            @forelse ($galleries as $gallery)
+                <a href="{{ route('galleries.show', $gallery->slug) }}"
+                   class="group relative block rounded-2xl border border-gray-200
+                          shadow-md overflow-hidden
+                          hover:shadow-rose-600/30 hover:border-rose-500
+                          transition-all duration-500 transform hover:-translate-y-2">
+
+                    <div class="relative h-64">
+                        <img
+                            src="{{ asset('storage/' . $gallery->cover_image) }}"
+                            class="w-full h-full object-cover
+                                   group-hover:scale-110 transition-transform duration-700"
+                            onerror="this.src='https://images.pexels.com/photos/274506/pexels-photo-274506.jpeg';"
+                        >
+
+                        <div class="absolute inset-0 bg-gradient-to-t
+                                    from-black/80 via-black/40 to-transparent"></div>
+
+                        <div class="absolute bottom-0 left-0 right-0 p-6">
+                            <h3 class="text-white text-xl font-bold mb-1">
+                                {{ $gallery->title }}
+                            </h3>
+                            <p class="text-gray-200 text-sm font-medium
+                                      group-hover:text-rose-400 transition-colors">
+                                {{ $gallery->photos_count }} Foto • Lihat Galeri →
+                            </p>
                         </div>
-                    </a>
-                @endforeach
-            </div>
+                    </div>
+                </a>
+            @empty
+                <p class="text-center text-gray-500 col-span-full">
+                    Belum ada galeri tersedia.
+                </p>
+            @endforelse
 
-            <!-- Video Section -->
+        </div>
+
+        <!-- CTA -->
+        <div class="text-center mt-14">
+            <a href="{{ route('galleries.index') }}"
+               class="inline-flex items-center gap-2
+                      bg-gradient-to-r from-rose-600 to-red-600
+                      hover:from-rose-700 hover:to-red-700
+                      text-white px-8 py-3 rounded-xl font-bold
+                      transition-all shadow-xl hover:scale-105">
+                Lihat Semua Galeri
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M9 5l7 7-7 7"/>
+                </svg>
+            </a>
+        </div>
+
+          <!-- Video Section -->
             <div class="mt-24">
                 <div class="text-center mb-14">
-                    <h2
-                        class="text-5xl font-extrabold bg-gradient-to-r from-neutral-900 via-neutral-700 to-neutral-500 bg-clip-text text-transparent mb-4 drop-shadow-sm">
+                    <h2 class="text-5xl font-extrabold bg-gradient-to-r from-neutral-900 via-neutral-700 to-neutral-500 bg-clip-text text-transparent mb-4 drop-shadow-sm">
                         Galeri Video
                     </h2>
                     <div class="w-24 h-1 mx-auto bg-gradient-to-r from-rose-600 to-red-600 rounded-full mb-4"></div>
@@ -385,45 +409,72 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     <!-- Example Video Card -->
-                    <div
-                        class="bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-rose-600/30 hover:border-rose-500 overflow-hidden transition-all duration-500 transform hover:-translate-y-2">
-                        <div class="aspect-video overflow-hidden">
-                            <iframe src="https://www.youtube.com/embed/7HiKTMNHyME" frameborder="0" allowfullscreen
-                                class="w-full h-full"></iframe>
-                        </div>
-                        <div class="p-6">
-                            <h3 class="text-lg font-bold text-gray-900 mb-2">Latihan Pramusim di Hong Kong</h3>
-                            <p class="text-sm text-gray-500 font-medium">Dipublikasikan 2 September 2025</p>
-                        </div>
-                    </div>
+                    @forelse ($videos as $video)
+        <a href="https://www.youtube.com/watch?v={{ $video->youtube_id }}"
+           target="_blank"
+           class="group bg-white border border-gray-200 rounded-2xl shadow-md
+                  hover:shadow-rose-600/30 hover:border-rose-500
+                  overflow-hidden transition-all duration-500 transform hover:-translate-y-2">
 
-                    <div
-                        class="bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-rose-600/30 hover:border-rose-500 overflow-hidden transition-all duration-500 transform hover:-translate-y-2">
-                        <div class="aspect-video overflow-hidden">
-                            <iframe src="https://www.youtube.com/embed/U_PmnRJnM5Y" frameborder="0" allowfullscreen
-                                class="w-full h-full"></iframe>
-                        </div>
-                        <div class="p-6">
-                            <h3 class="text-lg font-bold text-gray-900 mb-2">Turnamen Kades Cup II</h3>
-                            <p class="text-sm text-gray-500 font-medium">Dipublikasikan 1 September 2025</p>
-                        </div>
-                    </div>
+            {{-- Thumbnail --}}
+            <div class="relative aspect-video overflow-hidden">
+                <img
+                    src="{{ $video->thumbnail }}"
+                    alt="{{ $video->title }}"
+                    class="w-full h-full object-cover
+                           group-hover:scale-110 transition-transform duration-700">
 
-                    <div
-                        class="bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-rose-600/30 hover:border-rose-500 overflow-hidden transition-all duration-500 transform hover:-translate-y-2">
-                        <div class="aspect-video overflow-hidden">
-                            <iframe src="https://www.youtube.com/embed/9xwazD5SyVg" frameborder="0" allowfullscreen
-                                class="w-full h-full"></iframe>
-                        </div>
-                        <div class="p-6">
-                            <h3 class="text-lg font-bold text-gray-900 mb-2">Behind the Scenes: Pemain Baru</h3>
-                            <p class="text-sm text-gray-500 font-medium">Dipublikasikan 30 Agustus 2025</p>
-                        </div>
+                {{-- Overlay --}}
+                <div class="absolute inset-0 bg-black/40"></div>
+
+                {{-- Play Button --}}
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="bg-red-600 rounded-full w-14 h-14
+                                flex items-center justify-center
+                                text-white text-xl shadow-lg
+                                group-hover:scale-110 transition">
+                        ▶
                     </div>
                 </div>
             </div>
+
+            {{-- Content --}}
+            <div class="p-6">
+                <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2">
+                    {{ $video->title }}
+                </h3>
+                <p class="text-sm text-gray-500 font-medium">
+                    Dipublikasikan
+                    {{ $video->published_at?->translatedFormat('d F Y') }}
+                </p>
+            </div>
+        </a>
+    @empty
+        <p class="col-span-full text-center text-gray-500">
+            Belum ada video tersedia.
+        </p>
+    @endforelse
+                </div>
+            </div>
+             <div class="text-center mt-14">
+            <a href="https://www.youtube.com/@sumselunited" target="_blank" rel="noopener noreferrer"
+               class="inline-flex items-center gap-2
+                      bg-gradient-to-r from-rose-600 to-red-600
+                      hover:from-rose-700 hover:to-red-700
+                      text-white px-8 py-3 rounded-xl font-bold
+                      transition-all shadow-xl hover:scale-105">
+                Kanal Youtube
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M9 5l7 7-7 7"/>
+                </svg>
+            </a>
         </div>
-    </section>
+
+    </div>
+</section>
+
+
 
     @php
         $players = [
