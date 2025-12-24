@@ -3,36 +3,43 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
 
 class Ticket extends Model
 {
     protected $fillable = [
-        'match_name',
-        'stadium',
-        'match_date',
-        'sales_status',
+        'match_id',
+        'category',
         'price',
         'stock',
+        'sales_status',
         'is_active',
     ];
-    public function getStatusAttribute(): string
+
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
+
+    public function match()
     {
-        // HABIS selalu prioritas utama
-        if ((int) $this->stock <= 0) {
+        return $this->belongsTo(MatchModel::class, 'match_id');
+    }
+
+    /**
+     * Status FINAL untuk UI
+     */
+    public function getStatusAttribute()
+    {
+        // PRIORITAS 1: tidak aktif
+        if (!$this->is_active) {
+            return 'inactive';
+        }
+
+        // PRIORITAS 2: stok habis
+        if ($this->stock <= 0) {
             return 'sold_out';
         }
 
-        // selain itu, ikuti pilihan admin
-        return $this->sales_status === 'available'
-            ? 'available'
-            : 'upcoming';
+        // PRIORITAS 3: pilihan admin
+        return $this->sales_status; // available | upcoming
     }
-
-
-
-    protected $casts = [
-        'match_date' => 'datetime',
-        'is_active' => 'boolean',
-    ];
 }

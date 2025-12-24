@@ -5,24 +5,36 @@ namespace App\Livewire\Client;
 use Livewire\Component;
 use App\Models\Ticket;
 use App\Models\TicketOrder;
+use Illuminate\Support\Facades\DB;
 
 class TicketPurchaseComponent extends Component
 {
     public $confirmingTicketId = null;
     public $search = '';
-
-    public $ticket;
-    public $match = null;
+    public $ticket = null;
 
     protected $queryString = [
         'search' => ['except' => ''],
-        'match' => ['except' => null],
     ];
 
+    /**
+     * ===========================
+     * MOUNT (DETAIL TIKET)
+     * ===========================
+     */
     public function mount($ticket = null)
     {
         if ($ticket) {
-            $this->ticket = Ticket::findOrFail($ticket);
+            $this->ticket = Ticket::query()
+                ->join('matches', 'tickets.match_id', '=', 'matches.id')
+                ->where('tickets.id', $ticket)
+                ->select(
+                    'tickets.*',
+                    'matches.match_date',
+                    'matches.stadium',
+                    DB::raw("CONCAT(matches.home_team,' vs ',matches.away_team) AS match_name")
+                )
+                ->firstOrFail();
         }
     }
 
@@ -31,6 +43,11 @@ class TicketPurchaseComponent extends Component
         $this->confirmingTicketId = $ticketId;
     }
 
+    /**
+     * ===========================
+     * PROSES PEMBELIAN
+     * ===========================
+     */
     public function buyConfirmed()
     {
         $ticket = Ticket::findOrFail($this->confirmingTicketId);
@@ -49,45 +66,58 @@ class TicketPurchaseComponent extends Component
             'status' => 'paid',
         ]);
 
-        // 🔽 KURANGI STOK
+        // kurangi stok
         $ticket->decrement('stock');
-
-        // ✅ INI KUNCINYA
-        $this->ticket->refresh();
 
         session()->flash('success', 'Tiket berhasil dibeli!');
         $this->confirmingTicketId = null;
     }
 
-
+    /**
+     * ===========================
+     * RENDER
+     * ===========================
+     */
     public function render()
     {
-        // DETAIL TIKET
+        /**
+         * DETAIL PAGE
+         */
         if ($this->ticket) {
-            return view('livewire.client.tickets.detail')
+            return view('livewire.client.tickets.detail', [
+                'ticket' => $this->ticket
+            ])
                 ->layout('client.layouts.app')
                 ->title('Detail Tiket');
         }
+
+        /**
+         * LIST TIKET
+         */
         $search = trim($this->search);
 
-        $tickets = Ticket::where('is_active', true)
+        $tickets = Ticket::query()
+            ->join('matches', 'tickets.match_id', '=', 'matches.id')
+            ->where('tickets.is_active', true)
             ->when($search !== '', function ($query) use ($search) {
                 $query->where(function ($q) use ($search) {
-                    $q->where('match_name', 'LIKE', "%{$search}%")
-                        ->orWhere('stadium', 'LIKE', "%{$search}%");
+                    $q->where('matches.home_team', 'LIKE', "%{$search}%")
+                        ->orWhere('matches.away_team', 'LIKE', "%{$search}%")
+                        ->orWhere('matches.stadium', 'LIKE', "%{$search}%");
                 });
             })
-            ->orderBy('match_date')
+            ->orderByRaw("CASE tickets.sales_status WHEN 'available' THEN 0 ELSE 1 END")
+            ->orderBy('matches.match_date', 'asc')
+            ->select(
+                'tickets.*',
+                'matches.match_date',
+                'matches.stadium',
+                DB::raw("CONCAT(matches.home_team,' vs ',matches.away_team) AS match_name")
+            )
             ->get();
 
-        // LIST TIKET
-        return view('livewire.client.tickets.purchase', [
-            'tickets' => Ticket::where('is_active', true)
-                ->orderBy('match_date')
-                ->get()
-        ])->layout('client.layouts.app')
+        return view('livewire.client.tickets.purchase', compact('tickets'))
+            ->layout('client.layouts.app')
             ->title('Beli Tiket');
     }
-
-
 }

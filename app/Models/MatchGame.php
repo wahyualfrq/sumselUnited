@@ -3,8 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Ticket; // ⬅️ WAJIB
 
-class MatchModel extends Model
+class MatchGame extends Model
 {
     protected $table = 'matches';
 
@@ -16,13 +17,8 @@ class MatchModel extends Model
         'status',
     ];
 
-    // 🔥 INI WAJIB ADA
-    protected $casts = [
-        'match_date' => 'datetime',
-    ];
-
     public function tickets()
     {
-        return $this->hasMany(Ticket::class, 'match_id');
+        return $this->hasMany(Ticket::class);
     }
 }

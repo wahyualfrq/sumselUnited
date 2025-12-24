@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\News;
 
 use Livewire\Component;
 use App\Models\News;
+use App\Models\Gallery;
 
 class Index extends Component
 {
@@ -13,13 +14,12 @@ class Index extends Component
     }
     public function render()
     {
-        return view('livewire.client.gallery.index', [
-            'galleries' => Gallery::where('is_visible', true)
-                ->withCount('photos')
-                ->latest()
-                ->get()
-        ])->layout('admin.layouts.app')
+        return view('livewire.admin.news.index', [
+            'news' => News::latest()->get()
+        ])
+            ->layout('admin.layouts.app')
             ->title('Manajemen Berita');
     }
+
 
 }

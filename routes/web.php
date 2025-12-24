@@ -49,6 +49,10 @@ use App\Livewire\Admin\Videos\VideoSyncComponent;
 use App\Http\Controllers\AuthController;
 use App\Http\Middleware\RoleMiddleware;
 
+use App\Livewire\Admin\Matches\Index as AdminMatchIndex;
+use App\Livewire\Admin\Matches\Create as AdminMatchCreate;
+use App\Livewire\Admin\Matches\Edit as AdminMatchEdit;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -71,6 +75,9 @@ Route::get('/gallery', ClientGalleryIndex::class)
 Route::get('/gallery/{gallery:slug}', ClientGalleryShow::class)
     ->name('galleries.show');
 
+Route::get('/pertandingan', MatchComponent::class)
+    ->name('matches');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -86,9 +93,6 @@ Route::middleware(['auth', RoleMiddleware::class . ':user'])
         // Detail & beli tiket (INI YANG DIPAKAI HERO)
         Route::get('/tickets/{ticket}', TicketPurchaseComponent::class)
             ->name('tickets.detail');
-
-        Route::get('/pertandingan', MatchComponent::class)
-            ->name('matches');
     });
 
 
@@ -122,6 +126,11 @@ Route::prefix('admin')
         Route::get('/galleries', AdminGalleryIndex::class)->name('gallery.index');
         Route::get('/galleries/create', GalleryCreate::class)->name('gallery.create');
         Route::get('/galleries/{id}/edit', GalleryEdit::class)->name('gallery.edit');
+        Route::prefix('matches')->name('matches.')->group(function () {
+            Route::get('/', AdminMatchIndex::class)->name('index');
+            Route::get('/create', AdminMatchCreate::class)->name('create');
+            Route::get('/{match}/edit', AdminMatchEdit::class)->name('edit');
+        });
 
     });
 

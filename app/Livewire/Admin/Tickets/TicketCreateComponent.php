@@ -4,29 +4,26 @@ namespace App\Livewire\Admin\Tickets;
 
 use Livewire\Component;
 use App\Models\Ticket;
+use App\Models\MatchGame;
 
 class TicketCreateComponent extends Component
 {
-    public string $match_name = '';
-    public string $stadium = '';
-    public string $match_date = ''; // format: Y-m-d\TH:i (input datetime-local)
-    public int $price = 0;
-    public int $stock = 0;
+    public $match_id = 0;
+    public $category = '';
+    public $price = 0;
+    public $stock = 0;
+    public $sales_status = 'upcoming'; // ⬅️ WAJIB
+    public $is_active = true;
 
-    public string $sales_status = 'upcoming';
-
-    public bool $is_active = true;
-
-    protected function rules(): array
+    protected function rules()
     {
         return [
-            'match_name' => ['required', 'string', 'max:255'],
-            'stadium' => ['required', 'string', 'max:255'],
-            'match_date' => ['required', 'date'],
+            'match_id'     => ['required', 'exists:matches,id'],
+            'category'     => ['required', 'string', 'max:100'],
+            'price'        => ['required', 'integer', 'min:0'],
+            'stock'        => ['required', 'integer', 'min:0'],
             'sales_status' => ['required', 'in:upcoming,available'],
-            'price' => ['required', 'integer', 'min:0'],
-            'stock' => ['required', 'integer', 'min:0'],
-            'is_active' => ['boolean'],
+            'is_active'    => ['boolean'],
         ];
     }
 
@@ -34,7 +31,14 @@ class TicketCreateComponent extends Component
     {
         $data = $this->validate();
 
-        Ticket::create($data);
+        Ticket::create([
+            'match_id'     => $data['match_id'],
+            'category'     => $data['category'],
+            'price'        => $data['price'],
+            'stock'        => $data['stock'],
+            'sales_status' => $data['sales_status'], // ⬅️ FIX
+            'is_active'    => $data['is_active'],
+        ]);
 
         session()->flash('success', 'Tiket berhasil ditambahkan.');
         return redirect()->route('admin.tickets.index');
@@ -42,8 +46,12 @@ class TicketCreateComponent extends Component
 
     public function render()
     {
-        return view('livewire.admin.tickets.create')
-            ->layout('admin.layouts.app')
-            ->title('Tambah Tiket');
+        return view('livewire.admin.tickets.create', [
+            'matches' => MatchGame::where('status', 'scheduled')
+                ->orderBy('match_date')
+                ->get(),
+        ])
+        ->layout('admin.layouts.app')
+        ->title('Tambah Tiket');
     }
 }

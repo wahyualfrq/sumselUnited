@@ -9,16 +9,18 @@ return new class extends Migration {
     {
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
-            $table->string('match_name');
-            $table->string('stadium');
-            $table->dateTime('match_date');
+            $table->foreignId('match_id')
+                ->constrained('matches')
+                ->cascadeOnDelete();
 
-            // 🔥 STATUS DIATUR ADMIN
+            $table->string('category');
+            $table->integer('price');
+            $table->integer('stock');
+
+            // ✅ SALES STATUS ADA
             $table->enum('sales_status', ['upcoming', 'available'])
                 ->default('upcoming');
 
-            $table->unsignedInteger('price');
-            $table->unsignedInteger('stock')->default(0);
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });

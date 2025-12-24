@@ -4,7 +4,9 @@
         {{-- HEADER --}}
         <div class="mb-10 text-center sm:text-left">
             <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
-                {{ $ticket->match_name }}
+                {{ $ticket->match->home_team }} vs {{ $ticket->match->away_team }}
+                {{ $ticket->match->stadium }}
+
             </h1>
 
             <div
@@ -25,7 +27,9 @@
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
-                    {{ $ticket->match_date->format('d F Y • H:i') }} WIB
+                    {{ optional($ticket->match?->match_date)->format('d M Y H:i') ?? '-' }} WIB
+
+
                 </span>
             </div>
         </div>
@@ -57,7 +61,8 @@
 
         {{-- STATUS --}}
         <div class="mb-10">
-            @if($ticket->status === 'available')
+            @if($ticket->sales_status === 'available')
+
                 <div
                     class="inline-flex items-center gap-2.5 bg-emerald-50 border border-emerald-100 text-emerald-700 px-5 py-2.5 rounded-full text-sm font-semibold shadow-sm">
                     <span class="relative flex h-2.5 w-2.5">
@@ -67,7 +72,8 @@
                     </span>
                     Tiket Tersedia
                 </div>
-            @elseif($ticket->status === 'upcoming')
+            @elseif($ticket->sales_status === 'upcoming')
+
                 <div
                     class="inline-flex items-center gap-2.5 bg-amber-50 border border-amber-100 text-amber-700 px-5 py-2.5 rounded-full text-sm font-semibold shadow-sm">
                     <span class="relative flex h-2.5 w-2.5">
@@ -87,11 +93,12 @@
         {{-- CTA --}}
         <div class="flex flex-col sm:flex-row gap-4 pt-8 border-t border-slate-100">
             @if($ticket->status === 'available')
-                    <button wire:click="$set('confirmingTicketId', {{ $ticket->id }})" class="flex-1 group bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 transition-all duration-200
-                   text-white py-4 rounded-xl font-bold text-base shadow-lg shadow-indigo-600/20
-                   transform hover:-translate-y-0.5 active:translate-y-0 focus:ring-4 focus:ring-indigo-100">
-                        Beli Tiket Sekarang
-                    </button>
+                <button wire:click="$set('confirmingTicketId', {{ $ticket->id }})"
+                    class="flex-1 group bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 transition-all duration-200
+                                       text-white py-4 rounded-xl font-bold text-base shadow-lg shadow-indigo-600/20
+                                       transform hover:-translate-y-0.5 active:translate-y-0 focus:ring-4 focus:ring-indigo-100">
+                    Beli Tiket Sekarang
+                </button>
 
             @endif
 
@@ -132,15 +139,15 @@
                 <div class="flex flex-col-reverse sm:flex-row justify-end gap-3">
                     {{-- BATAL --}}
                     <button type="button" wire:click="$set('confirmingTicketId', null)" class="px-5 py-2.5 rounded-xl text-sm font-semibold text-slate-600
-                               hover:bg-slate-50 hover:text-slate-900 transition-colors duration-200">
+                                                   hover:bg-slate-50 hover:text-slate-900 transition-colors duration-200">
                         Batal
                     </button>
 
                     {{-- KONFIRMASI --}}
                     <button type="button" wire:click="buyConfirmed" wire:loading.attr="disabled" wire:target="buyConfirmed"
                         class="px-6 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-indigo-600/20
-                               bg-indigo-600 hover:bg-indigo-700 transition-all duration-200
-                               text-white disabled:opacity-70 disabled:cursor-not-allowed">
+                                                   bg-indigo-600 hover:bg-indigo-700 transition-all duration-200
+                                                   text-white disabled:opacity-70 disabled:cursor-not-allowed">
 
                         <span wire:loading.remove wire:target="buyConfirmed">
                             Ya, Beli Tiket

@@ -13,6 +13,12 @@
             Dashboard
         </a>
 
+        {{-- 🔥 JADWAL PERTANDINGAN (BARU) --}}
+        <a href="{{ route('admin.matches.index') }}" class="block px-4 py-2 rounded-lg transition-all
+           {{ request()->routeIs('admin.matches.*') ? 'bg-white/20 font-semibold' : 'hover:bg-white/10' }}">
+            Jadwal Pertandingan
+        </a>
+
         <a href="{{ route('admin.tickets.index') }}"
             class="block px-4 py-3 rounded-lg hover:bg-white/10 {{ request()->routeIs('admin.tickets.*') ? 'bg-white/10' : '' }}">
             Manajemen Tiket
