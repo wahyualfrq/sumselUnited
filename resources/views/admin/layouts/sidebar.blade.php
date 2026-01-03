@@ -38,7 +38,7 @@
         </a>
 
         {{-- Manajemen Tim --}}
-        <a href="{{ route('admin.team') }}" class="block px-4 py-2 rounded-lg transition-all
+        <a href="{{ route('admin.players.index') }}" class="block px-4 py-2 rounded-lg transition-all
                 {{ request()->routeIs('admin.team') ? 'bg-white/20 font-semibold' : 'hover:bg-white/10' }}">
             Manajemen Tim
         </a>

@@ -16,7 +16,7 @@
                 <option value="">-- Pilih Pertandingan --</option>
                 @foreach ($matches as $match)
                     <option value="{{ $match->id }}">
-                        {{ $match->home_team }} vs {{ $match->away_team }}
+                        {{ $match->homeClub->name }} vs {{ $match->awayClub->name }}
                         — {{ \Carbon\Carbon::parse($match->match_date)->format('d M Y H:i') }}
                         ({{ $match->stadium }})
                     </option>

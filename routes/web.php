@@ -21,7 +21,6 @@ use App\Livewire\Client\{
 // =======================
 use App\Livewire\Admin\{
     DashboardComponent,
-    ManajemenTimComponent,
     PengaturanComponent,
 };
 
@@ -61,6 +60,11 @@ use App\Livewire\Admin\Matches\LiveControl;
 use App\Models\MatchGame;
 
 use App\Livewire\Admin\Clubs\Import as ClubImportComponent;
+
+use App\Livewire\Admin\Players\Index as PlayerIndex;
+use App\Livewire\Admin\Players\Create as PlayerCreate;
+use App\Livewire\Admin\Players\Edit as PlayerEdit;
+use App\Livewire\Admin\Players\Import as PlayerImport;
 
 
 /*
@@ -116,7 +120,6 @@ Route::prefix('admin')
     ->group(function () {
 
         Route::get('/dashboard', DashboardComponent::class)->name('dashboard');
-        Route::get('/team', ManajemenTimComponent::class)->name('team');
         Route::get('/settings', PengaturanComponent::class)->name('settings');
 
         // TICKET MANAGEMENT (SATU-SATUNYA MATCH SOURCE)
@@ -165,6 +168,18 @@ Route::prefix('admin')
         Route::get('/pertandingan', MatchComponent::class)->name('matches');
         Route::get('/pertandingan', MatchComponent::class)
             ->name('matches.page');
+
+        /*
+    |------------------------------------------
+    | PLAYER / MANAJEMEN TIM
+    |------------------------------------------
+    */
+        Route::prefix('players')->name('players.')->group(function () {
+            Route::get('/', PlayerIndex::class)->name('index');
+            Route::get('/create', PlayerCreate::class)->name('create');
+            Route::get('/edit', PlayerEdit::class)->name('edit');
+            Route::get('/import', PlayerImport::class)->name('import');
+        });
 
 
 

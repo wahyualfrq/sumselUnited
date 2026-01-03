@@ -14,11 +14,10 @@ class PlayersImport implements ToModel, WithHeadingRow
             'name' => $row['name'],
             'position' => $row['position'],
             'category' => $row['category'] ?? null,
-            'number' => $row['number'],
-            'age' => $row['age'],
-            'country' => $row['country'],
-            'photo' => $row['photo_url'] ?? null,
+            'number' => $row['number'] ?? null,
+            'age' => $row['age'] ?? null,
+            'country' => $row['country'] ?? null,
+            'photo_url' => $row['photo_url'] ?? null,
         ]);
     }
 }
-

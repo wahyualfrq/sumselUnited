@@ -4,40 +4,48 @@ namespace App\Livewire\Admin\Tickets;
 
 use Livewire\Component;
 use App\Models\Ticket;
+use App\Models\MatchGame;
 
 class TicketEditComponent extends Component
 {
     public Ticket $ticket;
 
-    public string $match_name = '';
-    public string $stadium = '';
-    public string $match_date = '';
+    // RELASI
+    public ?int $match_id = null;
+
+    // FIELD TIKET
+    public string $category = '';
+    public string $sales_status = 'upcoming';
     public int $price = 0;
     public int $stock = 0;
-
-    public string $sales_status = 'upcoming';
-
     public bool $is_active = true;
+
+    // DATA DROPDOWN
+    public $matches;
 
     public function mount(Ticket $ticket)
     {
         $this->ticket = $ticket;
 
-        $this->match_name = $ticket->match_name;
-        $this->stadium = $ticket->stadium;
-        $this->match_date = optional($ticket->match_date)->format('Y-m-d\TH:i') ?? '';
+        // LOAD MATCHES UNTUK DROPDOWN
+        $this->matches = MatchGame::with(['homeClub', 'awayClub'])
+            ->orderByDesc('match_date')
+            ->get();
+
+        // INIT DATA
+        $this->match_id = $ticket->match_id;
+        $this->category = $ticket->category ?? '';
         $this->sales_status = $ticket->sales_status ?? 'upcoming';
-        $this->price = (int) $ticket->price;
-        $this->stock = (int) $ticket->stock;
-        $this->is_active = (bool) $ticket->is_active;
+        $this->price = (int) ($ticket->price ?? 0);
+        $this->stock = (int) ($ticket->stock ?? 0);
+        $this->is_active = (bool) ($ticket->is_active ?? true);
     }
 
     protected function rules(): array
     {
         return [
-            'match_name' => ['required', 'string', 'max:255'],
-            'stadium' => ['required', 'string', 'max:255'],
-            'match_date' => ['required', 'date'],
+            'match_id' => ['required', 'exists:matches,id'],
+            'category' => ['required', 'string', 'max:255'],
             'sales_status' => ['required', 'in:upcoming,available'],
             'price' => ['required', 'integer', 'min:0'],
             'stock' => ['required', 'integer', 'min:0'],
@@ -45,12 +53,14 @@ class TicketEditComponent extends Component
         ];
     }
 
+
     public function update()
     {
         $data = $this->validate();
+
         $this->ticket->update($data);
 
-        session()->flash('success', 'Tiket berhasil diupdate.');
+        session()->flash('success', 'Tiket berhasil diperbarui.');
         return redirect()->route('admin.tickets.index');
     }
 
