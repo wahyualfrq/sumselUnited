@@ -13,7 +13,7 @@
         </div>
 
         <input wire:model="player.country" placeholder="Negara" class="input">
-        <input wire:model="photo_url" placeholder="URL Foto Pemain" class="input">
+        <input wire:model="photo" placeholder="URL Foto Pemain" class="input">
 
         <button wire:click="save" class="btn-primary">
             Simpan Pemain

@@ -3,17 +3,21 @@
 namespace App\Livewire\Admin\Players;
 
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use App\Models\Player;
 
 class Create extends Component
 {
+    use WithFileUploads;
+
     public string $name = '';
     public string $position = '';
     public string $category = '';
     public ?int $number = null;
     public ?int $age = null;
     public string $country = '';
-    public string $photo_url = '';
+
+    public $photo; // FILE UPLOAD
 
     protected function rules(): array
     {
@@ -24,13 +28,20 @@ class Create extends Component
             'number' => 'nullable|integer|min:1|max:99',
             'age' => 'nullable|integer|min:15|max:50',
             'country' => 'nullable|string|max:100',
-            'photo_url' => 'nullable|url',
+            'photo' => 'nullable|image|max:2048',
         ];
     }
 
     public function save()
     {
-        Player::create($this->validate());
+        $data = $this->validate();
+
+        // SIMPAN FOTO LOKAL
+        if ($this->photo) {
+            $data['photo_url'] = $this->photo->store('players', 'public');
+        }
+
+        Player::create($data);
 
         session()->flash('success', 'Pemain berhasil ditambahkan');
         return redirect()->route('admin.players.index');

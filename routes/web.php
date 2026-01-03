@@ -177,7 +177,7 @@ Route::prefix('admin')
         Route::prefix('players')->name('players.')->group(function () {
             Route::get('/', PlayerIndex::class)->name('index');
             Route::get('/create', PlayerCreate::class)->name('create');
-            Route::get('/edit', PlayerEdit::class)->name('edit');
+            Route::get('/{player}/edit', PlayerEdit::class)->name('edit'); // ✅ FIX
             Route::get('/import', PlayerImport::class)->name('import');
         });
 

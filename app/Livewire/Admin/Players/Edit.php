@@ -13,19 +13,39 @@ class Edit extends Component
 
     public Player $player;
 
-    // FOTO BARU (UPLOAD)
+    // 🔥 FLAT PROPERTIES (INI KUNCI)
+    public $name;
+    public $position;
+    public $category;
+    public $number;
+    public $age;
+    public $country;
+
     public $photo;
+
+    public function mount(Player $player)
+    {
+        $this->player = $player;
+
+        // INISIALISASI DATA
+        $this->name = $player->name;
+        $this->position = $player->position;
+        $this->category = $player->category;
+        $this->number = $player->number;
+        $this->age = $player->age;
+        $this->country = $player->country;
+    }
 
     protected function rules()
     {
         return [
-            'player.name' => 'required|string|max:255',
-            'player.position' => 'required|string|max:10',
-            'player.category' => 'nullable|string|max:50',
-            'player.number' => 'nullable|integer|min:0',
-            'player.age' => 'nullable|integer|min:0',
-            'player.country' => 'nullable|string|max:100',
-            'photo' => 'nullable|image|max:2048', // 2MB
+            'name' => 'required|string|max:255',
+            'position' => 'required|string|max:50',
+            'category' => 'nullable|string|max:100',
+            'number' => 'nullable|integer|min:1|max:99',
+            'age' => 'nullable|integer|min:15|max:50',
+            'country' => 'nullable|string|max:100',
+            'photo' => 'nullable|image|max:2048',
         ];
     }
 
@@ -33,20 +53,30 @@ class Edit extends Component
     {
         $this->validate();
 
-        // JIKA UPLOAD FOTO BARU
+        // 🔥 UPDATE DATA UTAMA
+        Player::where('id', $this->player->id)->update([
+            'name' => $this->name,
+            'position' => $this->position,
+            'category' => $this->category,
+            'number' => $this->number,
+            'age' => $this->age,
+            'country' => $this->country,
+        ]);
+
+        // FOTO BARU
         if ($this->photo) {
 
-            // hapus foto lama
-            if ($this->player->photo_url) {
+            if (
+                $this->player->photo_url &&
+                !str_starts_with($this->player->photo_url, 'http')
+            ) {
                 Storage::disk('public')->delete($this->player->photo_url);
             }
 
-            // simpan foto baru
-            $path = $this->photo->store('players', 'public');
-            $this->player->photo_url = $path;
+            Player::where('id', $this->player->id)->update([
+                'photo_url' => $this->photo->store('players', 'public')
+            ]);
         }
-
-        $this->player->save();
 
         session()->flash('success', 'Data pemain berhasil diperbarui.');
         return redirect()->route('admin.players.index');

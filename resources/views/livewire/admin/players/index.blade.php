@@ -42,9 +42,12 @@
                             <td class="py-3 px-2 font-medium">
                                 <div class="flex items-center gap-3">
                                     <img
-                                        src="{{ $player->photo_url ?? asset('images/default-player.png') }}"
+                                        src="{{ str_starts_with($player->photo_url, 'http')
+                                            ? $player->photo_url
+                                            : asset('storage/' . $player->photo_url) }}"
                                         class="w-9 h-9 rounded-full object-cover"
                                         onerror="this.src='{{ asset('images/default-player.png') }}'">
+
                                     {{ $player->name }}
                                 </div>
                             </td>
