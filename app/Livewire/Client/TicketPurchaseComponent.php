@@ -34,9 +34,17 @@ class TicketPurchaseComponent extends Component
                     'tickets.*',
                     'matches.match_date',
                     'matches.stadium',
-                    DB::raw("CONCAT(home_club.name,' vs ',away_club.name) AS match_name")
+
+                    // HOME CLUB
+                    'home_club.name as home_club_name',
+                    'home_club.logo as home_club_logo',
+
+                    // AWAY CLUB
+                    'away_club.name as away_club_name',
+                    'away_club.logo as away_club_logo'
                 )
                 ->firstOrFail();
+
         }
     }
 
@@ -106,8 +114,8 @@ class TicketPurchaseComponent extends Component
             ->when($search !== '', function ($query) use ($search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('home_club.name', 'LIKE', "%{$search}%")
-                      ->orWhere('away_club.name', 'LIKE', "%{$search}%")
-                      ->orWhere('matches.stadium', 'LIKE', "%{$search}%");
+                        ->orWhere('away_club.name', 'LIKE', "%{$search}%")
+                        ->orWhere('matches.stadium', 'LIKE', "%{$search}%");
                 });
             })
             ->orderByRaw("

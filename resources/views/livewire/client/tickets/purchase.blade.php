@@ -91,11 +91,13 @@
                 {{-- GRID LIST TIKET --}}
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     @foreach($tickets as $ticket)
-                        @php
-                            $isAvailable = $ticket->status === 'available';
-                            $isSoldOut  = $ticket->status === 'sold_out';
+                       @php
+                            $isAvailable = $ticket->sales_status === 'available';
+                            $isSoldOut  = $ticket->sales_status === 'sold_out';
+                            $isUpcoming = $ticket->sales_status === 'upcoming';
                             $isLowStock = $isAvailable && $ticket->stock > 0 && $ticket->stock <= 20;
                         @endphp
+
 
                         {{-- TICKET CARD COMPONENT --}}
                         <div wire:key="ticket-{{ $ticket->id }}"
@@ -114,14 +116,33 @@
                                         <div class="text-slate-500 text-xs font-bold">{{ \Carbon\Carbon::parse($ticket->match_date)->format('H:i') }} WIB</div>
                                     </div>
                                     
-                                    {{-- Status Badge --}}
-                                    @if($isSoldOut)
-                                        <div class="px-2 py-1 bg-slate-100 border border-slate-200 rounded text-[10px] font-bold text-slate-500 uppercase tracking-wide">TIKET HABIS</div>
-                                    @elseif($isLowStock)
-                                        <div class="px-2 py-1 bg-red-50 border border-red-100 rounded text-[10px] font-bold text-red-600 uppercase tracking-wide animate-pulse">HAMPIR HABIS</div>
-                                    @else
-                                        <div class="px-2 py-1 bg-emerald-50 border border-emerald-100 rounded text-[10px] font-bold text-emerald-600 uppercase tracking-wide">TERSEDIA</div>
-                                    @endif
+                                   {{-- Status Badge --}}
+                                        @if($isSoldOut)
+                                            <div class="px-2 py-1 bg-slate-100 border border-slate-200 rounded
+                                                        text-[10px] font-bold text-slate-500 uppercase tracking-wide">
+                                                Tiket Habis
+                                            </div>
+
+                                        @elseif($isUpcoming)
+                                            <div class="px-2 py-1 bg-amber-50 border border-amber-100 rounded
+                                                        text-[10px] font-bold text-amber-600 uppercase tracking-wide">
+                                                Segera Tersedia
+                                            </div>
+
+                                        @elseif($isLowStock)
+                                            <div class="px-2 py-1 bg-red-50 border border-red-100 rounded
+                                                        text-[10px] font-bold text-red-600 uppercase tracking-wide animate-pulse">
+                                                Hampir Habis
+                                            </div>
+
+                                        @else
+                                            <div class="px-2 py-1 bg-emerald-50 border border-emerald-100 rounded
+                                                        text-[10px] font-bold text-emerald-600 uppercase tracking-wide">
+                                                Tersedia
+                                            </div>
+                                        @endif
+
+
                                 </div>
 
                                 {{-- Match Title --}}

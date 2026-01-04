@@ -18,7 +18,7 @@
                 <div>
                     <div class="inline-flex items-center gap-2 mb-3">
                         <span class="px-2 py-1 rounded bg-rose-500/20 text-rose-300 text-[10px] font-bold tracking-widest uppercase border border-rose-500/30">
-                            Step 1 of 2
+                            Langkah 1 dari 2
                         </span>
                         <span class="h-px w-8 bg-rose-500/30"></span>
                         <span class="text-slate-400 text-xs font-medium uppercase tracking-wider">Tiket Resmi</span>
@@ -35,12 +35,12 @@
                 <div class="hidden lg:flex items-center gap-3 opacity-60">
                     <div class="flex items-center gap-2 text-white font-bold">
                         <div class="w-8 h-8 rounded-full bg-rose-600 flex items-center justify-center text-sm">1</div>
-                        <span>Review</span>
+                        <span>Tinjau</span>
                     </div>
                     <div class="w-12 h-px bg-slate-700"></div>
                     <div class="flex items-center gap-2 text-slate-500 font-medium">
                         <div class="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-sm">2</div>
-                        <span>Payment</span>
+                        <span>Pembayaran</span>
                     </div>
                 </div>
             </div>
@@ -70,7 +70,7 @@
                         {{-- Header Tiket --}}
                         <div class="flex justify-between items-start mb-8">
                             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-xs font-bold uppercase tracking-widest text-slate-500">
-                                <span>Official Ticket</span>
+                                <span>Tiket Resmi</span>
                             </div>
                             
                             @if($ticket->sales_status === 'available')
@@ -79,28 +79,67 @@
                                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                                         <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                                     </span>
-                                    Available
+                                    Tersedia
                                 </div>
                             @elseif($ticket->sales_status === 'upcoming')
                                 <div class="inline-flex items-center gap-1.5 text-amber-600 font-bold text-sm bg-amber-50 px-3 py-1 rounded-full border border-amber-100">
                                     <span class="h-2 w-2 rounded-full bg-amber-500"></span>
-                                    Coming Soon
+                                    Segera Tersedia
                                 </div>
                             @else
                                 <div class="inline-flex items-center gap-1.5 text-slate-500 font-bold text-sm bg-slate-100 px-3 py-1 rounded-full border border-slate-200">
                                     <span class="h-2 w-2 rounded-full bg-slate-400"></span>
-                                    Sold Out
+                                    Tiket Habis
                                 </div>
                             @endif
                         </div>
 
                         {{-- Judul Pertandingan --}}
                         <div class="mb-10 relative z-10">
-                            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tighter uppercase leading-[0.9]">
-                                <span class="block text-rose-600 drop-shadow-sm">{{ $ticket->match->home_team }}</span>
-                                <span class="text-2xl sm:text-3xl text-slate-300 font-bold py-2 block italic">VS</span>
-                                <span class="block">{{ $ticket->match->away_team }}</span>
-                            </h1>
+                           <div class="flex items-center justify-between gap-6 mb-10">
+
+                            {{-- HOME CLUB --}}
+                            <div class="flex flex-col items-center text-center w-1/3">
+                                <img
+                                    src="{{ $ticket->home_club_logo
+                                        ? (str_starts_with($ticket->home_club_logo, 'http')
+                                            ? $ticket->home_club_logo
+                                            : asset('storage/' . $ticket->home_club_logo))
+                                        : asset('images/default-club.png') }}"
+                                    alt="{{ $ticket->home_club_name }}"
+                                    class="w-20 h-20 object-contain mb-3">
+
+                                <span class="text-xl sm:text-2xl font-black uppercase text-rose-600">
+                                    {{ $ticket->home_club_name }}
+                                </span>
+                            </div>
+
+                            {{-- VS --}}
+                            <div class="flex flex-col items-center">
+                                <span class="text-2xl sm:text-3xl font-black italic text-slate-300">
+                                    VS
+                                </span>
+                            </div>
+
+                            {{-- AWAY CLUB --}}
+                            <div class="flex flex-col items-center text-center w-1/3">
+                                <img
+                                    src="{{ $ticket->away_club_logo
+                                        ? (str_starts_with($ticket->away_club_logo, 'http')
+                                            ? $ticket->away_club_logo
+                                            : asset('storage/' . $ticket->away_club_logo))
+                                        : asset('images/default-club.png') }}"
+                                    alt="{{ $ticket->away_club_name }}"
+                                    class="w-20 h-20 object-contain mb-3">
+
+                                <span class="text-xl sm:text-2xl font-black uppercase text-slate-900">
+                                    {{ $ticket->away_club_name }}
+                                </span>
+                            </div>
+
+                        </div>
+
+
                         </div>
 
                         {{-- Info Meta (Venue & Date) --}}
@@ -113,7 +152,7 @@
                                     </svg>
                                 </div>
                                 <div>
-                                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Venue Location</p>
+                                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Lokasi Stadion</p>
                                     <p class="text-lg font-bold text-slate-800 leading-tight">{{ $ticket->stadium }}</p>
                                     <p class="text-sm text-slate-500 font-medium">{{ $ticket->match->stadium }}</p>
                                 </div>
@@ -126,7 +165,7 @@
                                     </svg>
                                 </div>
                                 <div>
-                                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Kick-off Time</p>
+                                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Waktu Kick-off</p>
                                     <p class="text-lg font-bold text-slate-800 leading-tight">
                                         {{ optional($ticket->match?->match_date)->format('d M Y') ?? '-' }}
                                     </p>
@@ -165,7 +204,7 @@
                             </div>
 
                             <div class="text-center mb-6">
-                                <p class="text-[10px] font-bold uppercase text-slate-400 mb-2 tracking-widest">Total Price</p>
+                                <p class="text-[10px] font-bold uppercase text-slate-400 mb-2 tracking-widest">Total Harga</p>
                                 <div class="flex items-start justify-center text-rose-600 font-black tracking-tight">
                                     <span class="text-lg mt-1 mr-1">Rp</span>
                                     <span class="text-5xl">{{ number_format($ticket->price, 0, ',', '.') }}</span>
@@ -176,9 +215,9 @@
                             <div class="bg-white rounded-xl p-4 border border-slate-200 mb-6 flex justify-between items-center shadow-sm">
                                 <div class="flex items-center gap-2">
                                     <span class="w-2 h-2 rounded-full {{ $ticket->stock > 5 ? 'bg-emerald-500' : 'bg-red-500' }}"></span>
-                                    <span class="text-xs font-bold text-slate-400 uppercase">Stock</span>
+                                    <span class="text-xs font-bold text-slate-400 uppercase">Stok</span>
                                 </div>
-                                <span class="text-sm font-bold text-slate-800">{{ $ticket->stock }} <span class="font-normal text-slate-400">seats</span></span>
+                                <span class="text-sm font-bold text-slate-800">{{ $ticket->stock }} <span class="font-normal text-slate-400">kursi</span></span>
                             </div>
                         </div>
 
@@ -215,7 +254,7 @@
                   d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>
         <span class="text-xs font-bold text-rose-700 uppercase tracking-wide">
-            Official Partner
+            Mitra Resmi
         </span>
     </div>
 
@@ -227,7 +266,7 @@
                   d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
         </svg>
         <span class="text-xs font-bold text-emerald-700 uppercase tracking-wide">
-            Secure Payment
+            Pembayaran Aman
         </span>
     </div>
 
@@ -239,7 +278,7 @@
                   d="M13 10V3L4 14h7v7l9-11h-7z"/>
         </svg>
         <span class="text-xs font-bold text-indigo-700 uppercase tracking-wide">
-            Instant Process
+            Proses Instan
         </span>
     </div>
 
