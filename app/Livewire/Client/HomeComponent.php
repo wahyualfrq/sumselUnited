@@ -8,6 +8,7 @@ use App\Models\News;
 use App\Models\Gallery;
 use App\Models\Video;
 use App\Models\Player;
+use Carbon\Carbon;
 
 
 class HomeComponent extends Component
@@ -26,122 +27,117 @@ class HomeComponent extends Component
         'minutes' => 0,
     ];
 
-    public function render()
-    {
-        $now = now('Asia/Jakarta');
+public function mount()
+{
+    $now = now('Asia/Jakarta');
 
-        /* =========================
-         * GALERI
-         * ========================= */
-        $this->galleries = Gallery::where('is_visible', true)
-            ->latest()
-            ->limit(4)
-            ->get();
+    /* =========================
+     * GALERI
+     * ========================= */
+    $this->galleries = Gallery::where('is_visible', true)
+        ->latest()
+        ->limit(4)
+        ->get();
 
-        /* =========================
-         * VIDEO
-         * ========================= */
-        $this->videos = Video::where('is_visible', true)
-            ->latest('published_at')
-            ->limit(3)
-            ->get();
+    /* =========================
+     * VIDEO
+     * ========================= */
+    $this->videos = Video::where('is_visible', true)
+        ->latest('published_at')
+        ->limit(3)
+        ->get();
 
-        /* =========================
-         * NEXT MATCH (HERO CARD)
-         * ========================= */
-        $this->nextMatch = Ticket::query()
-            ->join('matches', 'matches.id', '=', 'tickets.match_id')
-            ->join('clubs as home_club', 'home_club.id', '=', 'matches.home_club_id')
-            ->join('clubs as away_club', 'away_club.id', '=', 'matches.away_club_id')
-            ->where('tickets.is_active', true)
-            ->where('matches.match_date', '>=', $now)
-            ->orderByRaw("
-                CASE
-                    WHEN tickets.sales_status = 'available' THEN 0
-                    ELSE 1
-                END
-            ")
-            ->orderBy('matches.match_date', 'asc')
-            ->select([
-                'tickets.*',
-                'matches.match_date',
-                'matches.stadium',
-                'home_club.name as home_team',
-                'away_club.name as away_team',
-            ])
-            ->first();
+    /* =========================
+     * NEXT MATCH (PALING DEKAT)
+     * ========================= */
+    $this->nextMatch = Ticket::query()
+        ->join('matches', 'matches.id', '=', 'tickets.match_id')
+        ->join('clubs as home_club', 'home_club.id', '=', 'matches.home_club_id')
+        ->join('clubs as away_club', 'away_club.id', '=', 'matches.away_club_id')
+        ->where('tickets.is_active', true)
+        ->where('matches.match_date', '>', $now) // ⬅️ STRICTLY KE DEPAN
+        ->orderByRaw("
+            CASE
+                WHEN tickets.sales_status = 'available' THEN 0
+                WHEN tickets.sales_status = 'upcoming' THEN 1
+                ELSE 2
+            END
+        ")
+        ->orderBy('matches.match_date', 'asc')
+        ->select([
+            'tickets.*',
+            'matches.match_date',
+            'matches.stadium',
+            'home_club.name as home_team',
+            'away_club.name as away_team',
+        ])
+        ->first();
 
-        /* =========================
-         * COUNTDOWN
-         * ========================= */
-        $this->countdown = ['days' => 0, 'hours' => 0, 'minutes' => 0];
+    /* =========================
+     * COUNTDOWN (FIXED)
+     * ========================= */
+    if ($this->nextMatch?->match_date) {
+        $diff = $now->diff($this->nextMatch->match_date);
 
-        if ($this->nextMatch?->match_date) {
-            $diff = $now->diff($this->nextMatch->match_date);
-
-            $this->countdown = [
-                'days' => $diff->days,
-                'hours' => $diff->h,
-                'minutes' => $diff->i,
-            ];
-        }
-
-        /* =========================
-         * UPCOMING MATCHES (KANAN)
-         * ========================= */
-        $this->upcomingMatches = Ticket::query()
-            ->join('matches', 'matches.id', '=', 'tickets.match_id')
-            ->join('clubs as home_club', 'home_club.id', '=', 'matches.home_club_id')
-            ->join('clubs as away_club', 'away_club.id', '=', 'matches.away_club_id')
-            ->whereDate('matches.match_date', '>=', now()->toDateString())
-            ->orderByRaw("
-                CASE
-                    WHEN tickets.sales_status = 'available' THEN 0
-                    WHEN tickets.sales_status = 'upcoming' THEN 1
-                    ELSE 2
-                END
-            ")
-            ->orderBy('matches.match_date', 'asc')
-            ->select([
-                'tickets.id',
-                'tickets.sales_status',
-                'matches.match_date',
-                'matches.stadium',
-                'home_club.name as home_team',
-                'away_club.name as away_team',
-            ])
-            ->limit(3)
-            ->get();
-
-        /* =========================
-         * HASIL LAGA (MENANG / KALAH SAJA)
-         * ========================= */
-        $this->finishedMatches = \App\Models\MatchGame::with(['homeClub', 'awayClub'])
-            ->where('status', 'finished')
-            ->whereColumn('home_score', '!=', 'away_score') // ⬅️ BUANG SERI
-            ->orderByDesc('match_date')
-            ->limit(2) // ⬅️ CUMA 2
-            ->get();
-
-
-        /* =========================
-         * BERITA
-         * ========================= */
-        $this->latestNews = News::where('is_visible', true)
-            ->latest('published_at')
-            ->limit(3)
-            ->get();
-
-        /* =========================
-         * PLAYERS (TIM UTAMA)
-         * ========================= */
-        $this->players = Player::where('category', 'Utama')
-            ->orderBy('number')
-            ->limit(4)
-            ->get();
-
-
-        return view('livewire.client.home-component')
-            ->layout('client.layouts.app');
+        $this->countdown = [
+            'days'    => $diff->d,
+            'hours'   => $diff->h,
+            'minutes' => $diff->i,
+        ];
     }
+
+    /* =========================
+     * UPCOMING MATCHES
+     * ========================= */
+    $this->upcomingMatches = Ticket::query()
+        ->join('matches', 'matches.id', '=', 'tickets.match_id')
+        ->join('clubs as home_club', 'home_club.id', '=', 'matches.home_club_id')
+        ->join('clubs as away_club', 'away_club.id', '=', 'matches.away_club_id')
+        ->where('matches.match_date', '>', $now)
+        ->orderBy('matches.match_date', 'asc')
+        ->limit(3)
+        ->select([
+            'tickets.id',
+            'tickets.sales_status',
+            'matches.match_date',
+            'matches.stadium',
+            'home_club.name as home_team',
+            'away_club.name as away_team',
+        ])
+        ->get();
+
+    /* =========================
+     * HASIL LAGA
+     * ========================= */
+    $this->finishedMatches = \App\Models\MatchGame::with(['homeClub', 'awayClub'])
+        ->where('status', 'finished')
+        ->whereColumn('home_score', '!=', 'away_score')
+        ->latest('match_date')
+        ->limit(2)
+        ->get();
+
+    /* =========================
+     * BERITA
+     * ========================= */
+    $this->latestNews = News::where('is_visible', true)
+        ->latest('published_at')
+        ->limit(3)
+        ->get();
+
+    /* =========================
+     * PLAYERS
+     * ========================= */
+    $this->players = Player::where('category', 'Utama')
+        ->orderBy('number')
+        ->limit(4)
+        ->get();
+}
+
+
+ public function render()
+{
+    return view('livewire.client.home-component')
+        ->layout('client.layouts.app');
+}
+
 }

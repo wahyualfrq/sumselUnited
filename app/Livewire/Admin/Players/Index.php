@@ -10,7 +10,7 @@ class Index extends Component
     public function render()
     {
         return view('livewire.admin.players.index', [
-            'players' => Player::orderBy('name')->get()
+             'players' => Player::orderBy('name')->paginate(9),
         ])->layout('admin.layouts.app')
             ->title('Manajemen Tim');
     }

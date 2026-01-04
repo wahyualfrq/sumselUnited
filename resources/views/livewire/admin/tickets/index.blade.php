@@ -73,9 +73,9 @@
 
                                 {{-- PERTANDINGAN --}}
                                 <td class="p-3 font-semibold">
-                                    {{ $t->match->home_team ?? '-' }}
+                                   {{ $t->match->homeClub->name ?? '-' }}
                                     vs
-                                    {{ $t->match->away_team ?? '-' }}
+                                    {{ $t->match->awayClub->name ?? '-' }}
                                 </td>
 
                                 {{-- STADION --}}

@@ -26,31 +26,48 @@
                 </p>
 
                 <div class="flex items-center space-x-3 pt-2">
-                    <a href="https://twitter.com/sumselunited" target="_blank" aria-label="Twitter"
+
+                                            {{-- INSTAGRAM --}}
+                        <a href="https://www.instagram.com/sumselutdofficial"
+                        target="_blank"
+                        rel="noopener"
+                        aria-label="Instagram"
                         class="group flex items-center justify-center w-10 h-10 rounded-lg bg-neutral-900 border border-neutral-800 hover:border-rose-600 hover:bg-rose-600 transition-all duration-300">
+                            
+                            <svg class="w-5 h-5 text-neutral-400 group-hover:text-white transition-colors"
+                                fill="currentColor"
+                                viewBox="0 0 24 24">
+                                <path d="M7 2C4.243 2 2 4.243 2 7v10c0 2.757 2.243 5 5 5h10c2.757 0 5-2.243 5-5V7c0-2.757-2.243-5-5-5H7zm10 2c1.654 0 3 1.346 3 3v10c0 1.654-1.346 3-3 3H7c-1.654 0-3-1.346-3-3V7c0-1.654 1.346-3 3-3h10zm-5 3.5A5.5 5.5 0 1 0 17.5 13 5.506 5.506 0 0 0 12 7.5zm0 2A3.5 3.5 0 1 1 8.5 13 3.504 3.504 0 0 1 12 9.5zm5.25-.75a1.25 1.25 0 1 1-1.25-1.25 1.25 1.25 0 0 1 1.25 1.25z"/>
+                            </svg>
+                        </a>
+
+
+                    {{-- FACEBOOK --}}
+                    <a href="https://www.facebook.com/SumselUnited"
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="Facebook"
+                    class="group flex items-center justify-center w-10 h-10 rounded-lg bg-neutral-900 border border-neutral-800 hover:border-rose-600 hover:bg-rose-600 transition-all duration-300">
                         <svg class="w-4 h-4 text-neutral-400 group-hover:text-white transition-colors"
                             fill="currentColor" viewBox="0 0 24 24">
-                            <path
-                                d="M24 4.557a9.93 9.93 0 0 1-2.828.775A4.93 4.93 0 0 0 23.337 3a9.864 9.864 0 0 1-3.127 1.195A4.916 4.916 0 0 0 16.616 3c-2.732 0-4.946 2.215-4.946 4.946 0 .39.045.768.13 1.131A13.978 13.978 0 0 1 1.67 3.15a4.938 4.938 0 0 0-.668 2.483c0 1.71.87 3.216 2.188 4.099a4.903 4.903 0 0 1-2.238-.618v.06c0 2.386 1.693 4.376 3.946 4.828a4.935 4.935 0 0 1-2.23.084 4.936 4.936 0 0 0 4.604 3.417A9.875 9.875 0 0 1 0 19.54a13.957 13.957 0 0 0 7.548 2.212c9.057 0 14.014-7.51 14.014-14.014 0-.214-.005-.426-.014-.637A9.936 9.936 0 0 0 24 4.557z" />
+                            <path d="M22 12a10 10 0 1 0-11.5 9.87v-6.99h-2.4V12h2.4V9.79c0-2.37 1.42-3.68 3.6-3.68 1.04 0 2.12.18 2.12.18v2.33h-1.2c-1.18 0-1.54.74-1.54 1.5V12h2.63l-.42 2.88h-2.21v6.99A10 10 0 0 0 22 12z"/>
                         </svg>
                     </a>
-                    <a href="https://instagram.com/sumselunited" target="_blank" aria-label="Instagram"
-                        class="group flex items-center justify-center w-10 h-10 rounded-lg bg-neutral-900 border border-neutral-800 hover:border-rose-600 hover:bg-rose-600 transition-all duration-300">
+
+                    {{-- YOUTUBE --}}
+                    <a href="https://www.youtube.com/@sumselunited"
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="YouTube"
+                    class="group flex items-center justify-center w-10 h-10 rounded-lg bg-neutral-900 border border-neutral-800 hover:border-rose-600 hover:bg-rose-600 transition-all duration-300">
                         <svg class="w-4 h-4 text-neutral-400 group-hover:text-white transition-colors"
                             fill="currentColor" viewBox="0 0 24 24">
-                            <path
-                                d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9A5.5 5.5 0 0 1 16.5 22h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9A3.5 3.5 0 0 0 20 16.5v-9A3.5 3.5 0 0 0 16.5 4h-9zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.5-.75a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5z" />
+                            <path d="M23.5 6.5s-.2-1.7-.8-2.4c-.8-.8-1.7-.8-2.1-.9C17.7 3 12 3 12 3h-.1s-5.7 0-8.6.2c-.4.1-1.3.1-2.1.9-.6.7-.8 2.4-.8 2.4S0 8.3 0 10.1v1.8c0 1.8.4 3.6.4 3.6s.2 1.7.8 2.4c.8.8 1.9.8 2.4.9 1.7.2 7.1.2 7.1.2s5.7 0 8.6-.2c.4-.1 1.3-.1 2.1-.9.6-.7.8-2.4.8-2.4s.4-1.8.4-3.6v-1.8c0-1.8-.4-3.6-.4-3.6zM9.5 14.6V7.8l6.2 3.4-6.2 3.4z"/>
                         </svg>
                     </a>
-                    <a href="https://facebook.com/sumselunited" target="_blank" aria-label="Facebook"
-                        class="group flex items-center justify-center w-10 h-10 rounded-lg bg-neutral-900 border border-neutral-800 hover:border-rose-600 hover:bg-rose-600 transition-all duration-300">
-                        <svg class="w-4 h-4 text-neutral-400 group-hover:text-white transition-colors"
-                            fill="currentColor" viewBox="0 0 24 24">
-                            <path
-                                d="M22 12a10 10 0 1 0-11.5 9.87v-6.99h-2.4V12h2.4V9.79c0-2.37 1.42-3.68 3.6-3.68 1.04 0 2.12.18 2.12.18v2.33h-1.2c-1.18 0-1.54.74-1.54 1.5V12h2.63l-.42 2.88h-2.21v6.99A10 10 0 0 0 22 12z" />
-                        </svg>
-                    </a>
+
                 </div>
+
             </div>
 
             <div>
@@ -59,46 +76,49 @@
                     <h4 class="text-sm font-bold text-white uppercase tracking-widest">Tautan Cepat</h4>
                 </div>
                 <ul class="space-y-3">
-                    <li><a href="club.html"
-                            class="block text-sm hover:text-white hover:translate-x-1 transition-all duration-300">Tentang
-                            Klub</a></li>
-                    <li><a href="team.html"
-                            class="block text-sm hover:text-white hover:translate-x-1 transition-all duration-300">Tim &
-                            Pemain</a></li>
-                    <li><a href="matches.html"
-                            class="block text-sm hover:text-white hover:translate-x-1 transition-all duration-300">Jadwal
-                            Pertandingan</a></li>
-                    <li><a href="media.html"
-                            class="block text-sm hover:text-white hover:translate-x-1 transition-all duration-300">Berita
-                            & Media</a></li>
-                    <li><a href="contact.html"
-                            class="block text-sm hover:text-white hover:translate-x-1 transition-all duration-300">Kontak</a>
+                    <li>
+                        <a href="{{ route('home') }}"
+                        class="block text-sm hover:text-white hover:translate-x-1 transition-all duration-300">
+                            Beranda
+                        </a>
                     </li>
-                </ul>
-            </div>
 
-            <div>
-                <div class="flex items-center mb-6">
-                    <span class="w-3 h-0.5 bg-rose-600 mr-3 rounded-full"></span>
-                    <h4 class="text-sm font-bold text-white uppercase tracking-widest">Layanan Fans</h4>
-                </div>
-                <ul class="space-y-3">
-                    <li><a href="#"
-                            class="block text-sm hover:text-white hover:translate-x-1 transition-all duration-300">Beli
-                            Tiket</a></li>
-                    <li><a href="#"
-                            class="block text-sm hover:text-white hover:translate-x-1 transition-all duration-300">Membership</a>
+                    <li>
+                        <a href="{{ route('club') }}"
+                        class="block text-sm hover:text-white hover:translate-x-1 transition-all duration-300">
+                            Klub
+                        </a>
                     </li>
-                    <li><a href="#"
-                            class="block text-sm hover:text-white hover:translate-x-1 transition-all duration-300">Fan
-                            Club</a></li>
-                    <li><a href="#"
-                            class="block text-sm hover:text-white hover:translate-x-1 transition-all duration-300">Official
-                            Store</a></li>
-                    <li><a href="#"
-                            class="block text-sm hover:text-white hover:translate-x-1 transition-all duration-300">Stadium
-                            Tour</a></li>
+
+                    <li>
+                        <a href="{{ route('team') }}"
+                        class="block text-sm hover:text-white hover:translate-x-1 transition-all duration-300">
+                            Tim
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ route('matches') }}"
+                        class="block text-sm hover:text-white hover:translate-x-1 transition-all duration-300">
+                            Pertandingan
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ route('media') }}"
+                        class="block text-sm hover:text-white hover:translate-x-1 transition-all duration-300">
+                            Media
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ route('tickets.purchase') }}"
+                        class="block text-sm hover:text-white hover:translate-x-1 transition-all duration-300">
+                            Tiket Saya
+                        </a>
+                    </li>
                 </ul>
+
             </div>
 
             <div>
@@ -122,7 +142,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498A1 1 0 0121 16.72V19a2 2 0 01-2 2H18C10.716 21 3 13.284 3 6V5z" />
                         </svg>
-                        <span class="group-hover:text-neutral-300 transition-colors">+62 711 1234 5678</span>
+                        <span class="group-hover:text-neutral-300 transition-colors">+62 123 1234 5678</span>
                     </div>
                     <div class="flex items-center group">
                         <svg class="w-5 h-5 mr-4 text-rose-600 group-hover:text-white transition-colors" fill="none"

@@ -11,17 +11,20 @@
     @livewireStyles
 </head>
 
-<body class="min-h-screen flex flex-col bg-gray-50 text-gray-800">
+<body class="h-screen overflow-hidden bg-gray-50 text-gray-800">
 
     @include('admin.layouts.header')
-    @include('admin.layouts.sidebar')
 
-    <main class="flex-1 p-6 pt-24 lg:ml-64">
-        {{ $slot }}
-    </main>
+    <div class="flex h-[calc(100vh-64px)] overflow-hidden">
+
+        @include('admin.layouts.sidebar')
+
+        <main class="flex-1 p-6 lg:ml-64 overflow-hidden">
+            {{ $slot }}
+        </main>
+
+    </div>
 
     @livewireScripts
 </body>
-
-
 </html>
