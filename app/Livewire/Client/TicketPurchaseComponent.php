@@ -89,7 +89,7 @@ class TicketPurchaseComponent extends Component
             return view('livewire.client.tickets.detail', [
                 'ticket' => $this->ticket
             ])
-                ->layout('client.layouts.app')
+                ->layout('client.layouts.ticket')
                 ->title('Detail Tiket');
         }
 

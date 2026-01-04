@@ -82,41 +82,43 @@
 
                     {{-- CTA Buttons --}}
 
-                    <div class="flex flex-wrap items-center gap-5">
+                 <div class="flex flex-wrap items-center gap-5">
 
-                        <a href="{{ route('tickets.purchase') }}"
-                            class="group relative px-8 py-4 bg-[#E11D48] text-white rounded-full font-bold text-sm uppercase tracking-widest shadow-lg shadow-[#E11D48]/30 overflow-hidden transition-transform hover:-translate-y-1 hover:shadow-[#E11D48]/50">
+   @php
+    $ticketHref = auth()->check() && $nextMatch
+        ? route('tickets.detail', $nextMatch->id)
+        : route('login.page');
 
-                            <div
-                                class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]">
-
-                            </div>
-
-                            <span class="relative flex items-center gap-2">
-
-                                Beli Tiket
-
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-
-                                </svg>
-
-                            </span>
-
-                        </a>
+    $ticketLabel = auth()->check()
+        ? 'Beli Tiket'
+        : 'Masuk & Beli';
+@endphp
 
 
+    <a href="{{ $ticketHref }}"
+        class="group relative px-8 py-4 bg-[#E11D48] text-white rounded-full font-bold text-sm uppercase tracking-widest shadow-lg shadow-[#E11D48]/30 overflow-hidden transition-transform hover:-translate-y-1 hover:shadow-[#E11D48]/50">
 
-                        <a href="{{ route('team') }}"
-                            class="px-8 py-4 bg-white/5 backdrop-blur-sm border border-white/20 text-white rounded-full font-bold text-sm uppercase tracking-widest hover:bg-white hover:text-black transition-all duration-300">
+        {{-- shimmer --}}
+        <div
+            class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]">
+        </div>
 
-                            Lihat Tim
+        <span class="relative flex items-center gap-2">
+            {{ $ticketLabel }}
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+            </svg>
+        </span>
+    </a>
 
-                        </a>
+    <a href="{{ route('team') }}"
+        class="px-8 py-4 bg-white/5 backdrop-blur-sm border border-white/20 text-white rounded-full font-bold text-sm uppercase tracking-widest hover:bg-white hover:text-black transition-all duration-300">
+        Lihat Tim
+    </a>
 
-                    </div>
+</div>
+
 
                 </div>
 

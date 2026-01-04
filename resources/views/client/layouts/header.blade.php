@@ -46,16 +46,35 @@
             </div>
 
             {{-- 2. CENTER MENU (Desktop) --}}
-            <div class="hidden md:flex items-center space-x-8">
-                @foreach ($menu['client'] as $item)
-                            <a href="{{ route($item['url']) }}" class="nav-link text-sm font-medium tracking-wide transition-colors duration-200
-                                   {{ request()->routeIs($item['url'])
-                    ? 'text-[#E11D48] active'
-                    : 'text-gray-600 hover:text-[#E11D48]' }}">
-                                {{ $item['label'] }}
-                            </a>
-                @endforeach
-            </div>
+        <div class="hidden md:flex items-center space-x-8">
+            @foreach ($menu['client'] as $item)
+
+                {{-- MENU: TIKET SAYA (KHUSUS LOGIN + ROLE USER) --}}
+                @if ($item['label'] === 'Tiket Saya')
+                    @if (auth()->check() && auth()->user()->role === 'user')
+                        <a href="{{ route($item['url']) }}"
+                        class="nav-link text-sm font-medium tracking-wide transition-colors duration-200
+                        {{ request()->routeIs($item['url'])
+                                ? 'text-[#E11D48] active'
+                                : 'text-gray-600 hover:text-[#E11D48]' }}">
+                            {{ $item['label'] }}
+                        </a>
+                    @endif
+
+                {{-- MENU LAIN (SELALU TAMPIL) --}}
+                @else
+                    <a href="{{ route($item['url']) }}"
+                    class="nav-link text-sm font-medium tracking-wide transition-colors duration-200
+                    {{ request()->routeIs($item['url'])
+                            ? 'text-[#E11D48] active'
+                            : 'text-gray-600 hover:text-[#E11D48]' }}">
+                        {{ $item['label'] }}
+                    </a>
+                @endif
+
+            @endforeach
+        </div>
+
 
             {{-- 3. RIGHT ACTION AREA --}}
             <div class="hidden md:flex items-center gap-5">
@@ -79,17 +98,14 @@
                                 <p class="text-xs text-gray-400 font-medium uppercase tracking-wider">Signed in as</p>
                                 <p class="text-sm font-bold text-gray-800 truncate">{{ auth()->user()->email }}</p>
                             </div>
-                            @if(auth()->user()->role === 'admin')
-                                <button onclick="openAdminPopup()"
-                                    class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#E11D48] flex items-center gap-2">
+                           @if(auth()->check() && auth()->user()->role === 'admin')
+                                <a href="{{ route('admin.dashboard') }}"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#E11D48] flex items-center gap-2">
                                     Dashboard
-                                </button>
-                            @else
-                                <a href="{{ route('tickets.purchase') }}"
-                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#E11D48]">
-                                    My Tickets
                                 </a>
                             @endif
+
+
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button

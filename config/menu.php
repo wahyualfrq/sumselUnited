@@ -23,6 +23,12 @@ return [
             'url' => 'media',
             'query' => 'tab=all'
         ],
+        [
+            'label' => 'Tiket Saya',
+            'url' => 'tickets.purchase',
+        ],
+
+
 
         // 'Klub' => [
         //     ['label' => 'Profil Klub', 'url' => '/klub/profil'],
